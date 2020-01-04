@@ -1,8 +1,8 @@
 import Executor from './core';
 import { LogFunc, UserCode } from './types';
-import Game, { CircleGame } from './games/circleGame';
-import {SBHGame} from './games/sonbeonghoGame';
-import {RaindropGame} from '../JamiShip/games/raindrop';
+import Game, { CircleGame } from '../games/circleGame';
+import {SBHGame} from '../games/sonbeonghoGame';
+import {RaindropGame} from '../games/raindrop';
 
 const GAMES = {
   circle: CircleGame,
