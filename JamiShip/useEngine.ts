@@ -20,6 +20,7 @@ export default function useEngine() {
     }
     try {
       codeObj.loop();
+      
     } catch (err) {
       logger('error', err);
     }
