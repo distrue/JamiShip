@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import CodeEditor from '../components/CodeEditor';
-import { injectCode, build, ForeignCode } from '../JamiShip/Execute';
+import Executor, { ForeignCode } from '../JamiShip/Execute';
 import Logger, {LogItem} from '../components/Logger';
 
 const defaultCode = `const a = 123;
@@ -16,36 +16,32 @@ function loop() {
 }`;
 
 const CodePage = (): JSX.Element => {
+  let exec: Executor;
   const [codeValue, setCodeValue] = useState(defaultCode);
   const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
-  const [injectKey, setInjectKey] = useState('');
   const [log, setLog] = useState(0);
   const [logData, setLogData] = useState<LogItem[]>([]);
 
-  const logFactory = (level: 'log' | 'warn' | 'error', value: string) => {
+
+  const logger = (level: 'log' | 'warn' | 'error', value: string) => {
     const data = logData;
     const cnt = data.push({level, value: value.toString()});
     setLog(cnt);
     setLogData(data);
   }
 
-  const injector = (): string => {
-    return injectCode({
-      logger: {
-        log: (v) => logFactory('log', v),
-        warn: (v) => logFactory('warn', v),
-        error: (v) => logFactory('error', v)
-      }
-    });
-  }
-
   const loadHandler = () => {
-    const newInjectKey = injector();
-    setCodeObj(build(codeValue, newInjectKey));
-    if (injectKey !== '') {
-      delete (window as any)[injectKey];
+    try {
+      if (!exec) {
+        exec = new Executor(logger, {});
+      }
+      exec.setCode(codeValue);
+      setCodeObj(exec.getExec());
+      logger('log', 'Reloaded code');
+    } catch (err) {
+      logger('error', 'Failed to load code');
+      logger('error', err);
     }
-    setInjectKey(newInjectKey);
   };
   const initHandler = () => {
     if (codeObj === null) {
@@ -55,7 +51,7 @@ const CodePage = (): JSX.Element => {
     try {
       codeObj.init();
     } catch (err) {
-      logger.error(err);
+      logger('error', err);
     }
   };
   const loopHandler = () => {
@@ -66,7 +62,7 @@ const CodePage = (): JSX.Element => {
     try {
       codeObj.loop();
     } catch (err) {
-      logger.error(err);
+      logger('error', err);
     }
   };
 

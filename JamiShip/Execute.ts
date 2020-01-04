@@ -1,9 +1,10 @@
-type LogFunc = (input: any) => unknown;
+export type LogLevel = 'log' | 'warn' | 'error';
+export type LogFunc = (level: LogLevel, input: any) => unknown;
 
 export interface Logger {
-  log: LogFunc;
-  warn: LogFunc;
-  error: LogFunc;
+  log: (input: string) => unknown;
+  warn: (input: string) => unknown;
+  error: (input: string) => unknown;
 }
 
 /**
@@ -11,7 +12,7 @@ export interface Logger {
  * 단, `logger`는 global 스코프에도 저장됩니다.
  */
 export interface RunnerControls {
-  logger: Logger;
+  
 }
 
 /**
@@ -27,10 +28,10 @@ export interface ForeignCode {
  * @param input 실행할 외부 코드
  * @param injectKey 
  */
-export function makeFunc(input: string, injectKey: string): ForeignCode {
+function makeFunc(input: string): ForeignCode {
   return new Function(`
     return (function() {
-      const JA = window['${injectKey}'];
+      const JA = window.interfaceJA;
       ${input}
       const initDefault = () => {
         throw new Error('Exec error: Init undefined');
@@ -53,9 +54,9 @@ export function makeFunc(input: string, injectKey: string): ForeignCode {
  * @param code 실행할 외부 코드
  * @param injectKey `JA` 오브젝트에 대한 키 
  */
-export function build(code: string, injectKey: string): ForeignCode {
+function build(code: string): ForeignCode {
   try {
-    return makeFunc(code, injectKey);
+    return makeFunc(code);
   } catch (err) {
     throw err;
   }
@@ -66,11 +67,31 @@ export function build(code: string, injectKey: string): ForeignCode {
  * @param controls 삽입할 JA 오브젝트
  * @returns 삽입 키
  */
-export function injectCode(controls: RunnerControls): string {
-  const intKey = `interface${Math.floor(10000000*Math.random())}`;
-  // Inject RunnerRequiredControls
-  (window as any).logger = controls.logger;
+function injectCode(logger: Logger, controls: RunnerControls) {
+  (window as any).logger = logger;
   // Inject other controls (component)
-  (window as any)[intKey] = controls;
-  return intKey;
+  (window as any).interfaceJA = controls;
+}
+
+export default class Executor {
+  private code: string;
+  private logger: Logger;
+  constructor(logger: LogFunc, controls: RunnerControls) {
+    this.code = '';
+    this.logger = {
+      error: (v) => logger('error', v),
+      log: (v) => logger('log', v),
+      warn: (v) => logger('warn', v)
+    };
+    injectCode(this.logger, controls);
+  }
+  public inject(controls: RunnerControls) {
+    injectCode(this.logger, controls);
+  }
+  public setCode(code: string) {
+    this.code = code;
+  }
+  public getExec(): ForeignCode {
+    return build(this.code);
+  }
 }
