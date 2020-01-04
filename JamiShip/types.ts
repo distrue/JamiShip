@@ -3,7 +3,7 @@
  */
 export interface UserCode {
   init: () => unknown;
-  loop: () => unknown;
+  loop: (frameNo: number) => unknown;
   setup: () => unknown;
 }
 
