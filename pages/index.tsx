@@ -1,116 +1,105 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
-import useEngine from '../JamiShip/useEngine';
-import { ForeignCode } from '../JamiShip/Execute';
-import Logger, { LogItem } from '../components/Logger';
+import Link from 'next/link';
+import Layout from '../components/Layout';
+import { GameDisplay as items } from '../games/gameList';
+import { MdStar } from 'react-icons/md';
 
-const CodeEditor = dynamic(import('../components/CodeEditor'), {
-  ssr: false,
-});
-
-const defaultCode = `function setup() {
-  setGame("circle");
-  logger.dir(Game);
-  Game.add(20, 20);
+interface GameItemProps {
+  image: string;
+  title: string;
+  detail: string;
+  link: string;
+  rating?: number;
 }
-function init() {
 
-}
-function loop() {
-  Game.move(2);
-}`;
-
-const dirPrint = (value: Object) => {
-  let ans = '[Game Object]';
-  for (const [key, val] of Object.entries(value)) {
-    ans = ans.concat('\n', `${key}: ${val.toString()}`);
+const GameItem = (props: GameItemProps) => {
+  const {link, image, title, detail, rating} = props;
+  const stars = [];
+  for(let i=0; i<(rating ?? 3);i++) {
+    stars.push(<MdStar key={i} />);
   }
-  console.log(ans);
-  return ans;
-};
-export default () => {
-  // eslint-disable-next-line
-  const [code, setCode] = useState(defaultCode);
-  const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
-  const [log, setLog] = useState(0);
-  const [logData, setLogData] = useState<LogItem[]>([]);
-  const { start, compile } = useEngine();
-
-  // eslint-disable-next-line
-  const logger = ((level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
-    const data = logData;
-    const cnt = data.push({
-      level,
-      value: level === 'dir' ? dirPrint(value) : value.toString(),
-    });
-    if (level === 'error') {
-      console.error(value);
-    }
-    setLog(cnt);
-    setLogData(data);
-  });
-
-  const startHandler = () => {
-    if (codeObj === null) {
-      alert('Code not loaded!');
-    } else {
-      start(logger, codeObj).then(() => console.log('complete'));
-    }
-  };
-  const compileHandler = () => {
-    compile(setCodeObj, logger, code);
-  };
-
   return (
-    <>
-      <Background>
-        <div id="canvas-container" />
-        <CodeEditor className="cli" onChange={setCode} value={code} />
-        <div className="state">
-          <Logger count={log} logData={logData} />
+    <ItemContainer>
+      <Link href={link}>
+        <div>
+          <div className="image">
+            <img src={image} alt={title} />
+          </div>
+          <h2>{title}</h2>
+          <div>{detail}</div>
+          <div className="stars">{stars}</div>
         </div>
-        <button type="button" className="t1" onClick={compileHandler}>Compile</button>
-        <button type="button" className="t2" onClick={startHandler}>Run</button>
-      </Background>
-    </>
+      </Link>
+    </ItemContainer>
   );
 };
 
-const Background = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 0; left: 0;
-  grid-template-rows: 60% 40%;
-  grid-template-columns: 60% 40%;
-  display: grid;
-  canvas {
-    position: absolute;
+// const items: GameItemProps[] = [
+//   { image: 'http://img2.sbs.co.kr/img/sbs_cms/CH/2017/03/14/CH33548709_w666_h968.jpg', title: '손병호게임', link: '/learn/son', detail: '술게임으로 배우는 자바스크립트' },
+//   { image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다' },
+//   { image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다' },
+//   { image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다' },
+//   { image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg', title: '플레이그라운드', link: '/learn/playground', detail: '아무거나 하세요' },
+// ];
+
+const Main = () => (
+  <Layout>
+    <Container>
+      <h1>학습 시작하기</h1>
+      <div className="items">
+        {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={`/learn/${v.id}`} detail={v.desc} rating={v.rating} />)}
+      </div>
+    </Container>
+  </Layout>
+);
+
+const Container = styled.div`
+  & {
+    padding-top: 8px;
   }
-  .cli {
-    grid-row: 1 / 3;
-    grid-column: 2 / 3;
-    border: 1px solid black;
-    height: 100%;
-    width: 100%;
-    box-sizing: border-box;
+  h1 {
+    margin-left: 16px;
+    margin-top: 16px;
   }
-  .state {
-    grid-row: 2 / 3;
-    grid-column: 1 / 3;
-    border: 1px solid black;
-  }
-  .t1 {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 3;
-  }
-  .t2 {
-    position: absolute;
-    top: 100px;
-    left: 0;
-    z-index: 3;
+  .items {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 `;
+
+const ItemContainer = styled.div`
+  & {
+    user-select: none;
+    width: 360px;
+    height: 340px;
+    padding: 16px;
+    box-sizing: border-box;
+    margin: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #FFF;
+    box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.38);
+  }
+  .image {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  img {
+    padding: auto;
+    max-height: 200px;
+    max-width: 100%;
+  }
+  h2 {
+    margin: 12px 0 8px 0;
+  }
+  .stars {
+    margin-top: 8px;
+  }
+`;
+
+export default Main;

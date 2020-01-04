@@ -1,48 +1,3 @@
-/*
-예제코드
-import React from 'react';
-import styled from 'styled-components';
-
-import { BaseObj, checkRectOverlap} from '../JamiShip/component';
-
-export default () => {
-  // eslint-disable-next-line
-  const [canvases] = React.useState(['canvas1', 'canvas2']);
-  React.useEffect(() => {
-    const testBase = new BaseObj('canvas1', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 });
-    const testBase2 = new BaseObj('canvas2', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 }, { x: 100, y: 100 });
-    testBase.moveToWithCheckBump([testBase2], 550, 200, 1000).then(() => testBase2.moveToWithCheckBump([testBase], 700, 120, 2000))
-    .then(() => testBase.moveToWithCheckBump([testBase2], 400, 170, 1500)).then(() => testBase2.moveToWithCheckBump([testBase], 300, 200, 200));
-
-    testBase2.moveToWithCheckBump([testBase], 450, 250, 1000).then(() => testBase.moveToWithCheckBump([testBase2], 200, 10, 2000))
-    .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200));
-    console.log(testBase.getInnerRect());
-    console.log(checkRectOverlap(testBase.getInnerRect(), testBase2.getInnerRect()));
-  }, []);
-
-  return (
-    <>
-      <Background>
-        {canvases.map((name) => {
-          return (
-            <canvas key={name} className="canvas" id={name} width="1000px" height="300px">
-              canvas
-            </canvas>
-          );
-        })}
-        ...
-      </Background>
-    </>
-  );
-};
-
-const Background = styled.div`
-  ...
-  canvas {
-    position: absolute;
-  }
-  ...
- */
 function loadImage(urls: string[], idx: number): Promise<any[]> {
   if (idx === -1) {
     return new Promise((resolve) => {
@@ -96,6 +51,7 @@ export function canvas2dClear(canvas: HTMLCanvasElement) {
 export class BaseObj {
   private canvas: HTMLCanvasElement;
   private srcs: string[]; // 이미지 src 리스트
+  private loadedSrcs: string[]
   private ctx: CanvasRenderingContext2D;
   private size: { x: number; y: number }; // 사이즈 아마 픽셀단위
   private location: { x: number; y: number }; // 이미지 위치 왼쪽 위가 0,0
@@ -118,6 +74,7 @@ export class BaseObj {
     canvasParent!.appendChild(this.canvas);
     this.ctx = this.canvas.getContext('2d')!;
     this.srcs = srcs;
+    this.loadedSrcs = [];
     this.location = location;
     this.size = size;
     this.overlapable = overlapable;
@@ -133,6 +90,9 @@ export class BaseObj {
   }
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
+  }
+  delete() {
+    this.canvas.parentNode!.removeChild(this.canvas);
   }
   renewInnerRect() {
     const margin = { x: this.size.x / 8, y: this.size.y / 8 };
@@ -172,8 +132,8 @@ export class BaseObj {
       return this.moveTo(x, y, time, interval);
     }
     let number = time / interval;
-    const xGap = (x - this.location.x) / (time / interval);
-    const yGap = (y - this.location.y) / (time / interval);
+    const xGap = (x - this.location.x) / number;
+    const yGap = (y - this.location.y) / number;
     return new Promise((resolve, reject) => {
       const move = () => {
         number -= 1;
@@ -201,8 +161,8 @@ export class BaseObj {
   }
   moveTo(x: number, y: number, time: number, interval: number = 16) {
     let number = time / interval;
-    const xGap = (x - this.location.x) / (time / interval);
-    const yGap = (y - this.location.y) / (time / interval);
+    const xGap = (x - this.location.x) / number;
+    const yGap = (y - this.location.y) / number;
     return new Promise((resolve) => {
       const move = () => {
         number -= 1;
@@ -227,7 +187,7 @@ export class BaseObj {
   private getImageSrcs() {
     const ret = [];
     for (let i = 0; i < this.srcs.length; i += 1) {
-      if (this.imgs.findIndex((img) => img.src === this.srcs[i]) === -1) { // load 되지 않은 이미지들만 push
+      if (this.loadedSrcs.findIndex((src) => src === this.srcs[i]) === -1) { // load 되지 않은 이미지들만 push
         ret.push({
           src: this.srcs[i],
         });
@@ -238,6 +198,8 @@ export class BaseObj {
   draw() {
     this.clear();
     const getImgs = this.getImageSrcs();
+    this.loadedSrcs = [...this.loadedSrcs, ...getImgs.map((infos) => infos.src)];
+
     loadImage(
       getImgs.map((infos) => infos.src),
       getImgs.length - 1,
@@ -248,7 +210,6 @@ export class BaseObj {
       for (let i = 0; i < this.imgs.length; i += 1) {
         this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
-      this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
     });
   }
 }
