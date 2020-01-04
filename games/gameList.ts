@@ -27,9 +27,9 @@ function loop() {
 
 const sonbeonghoGame = {
   title: '손병호',
-  image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg',
+  image: 'https://t1.daumcdn.net/cfile/tistory/9952483C5B5D7D7D1D',
   id: 'sonbeonghoGame',
-  desc: '손병호 게임',
+  desc: '1962년생, 키 173cm, 안동 출신',
   stub: `function setup() {
   setGame("sonbeong");
   Game.add(150, 150, 'character', { hairColor: 'black',  height: 190 });
@@ -61,7 +61,7 @@ function loop(frameNo) {
 
 const raindrop = {
   title: '비내리기',
-  image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg',
+  image: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2018/11/PS18112700119.jpg',
   id: 'raindrop',
   desc: '비를 내려 고양이를 목욕시키세요',
   stub: `function setup() {
@@ -269,9 +269,9 @@ export const GameDisplay: GameEntry[] = [
   sonbeonghoGame,
   raindrop,
   shoot,
-  playground,
   fillBlock,
   puzzle8,
+  playground,
 ];
 
 export const EmptyGame = playground;

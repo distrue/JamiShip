@@ -41,7 +41,7 @@ const TopBar = (props: TopBarProps) => {
       <TopBarContainer>
         <>
           <div className="home" onClick={exitHandler}><MdHome /></div>
-          <span>JamiShip</span>
+          <span>JamiShipJS</span>
           {helpBtn}
         </>
       </TopBarContainer>
