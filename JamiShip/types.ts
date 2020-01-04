@@ -1,4 +1,4 @@
-import { LogLevel } from "./useLogger";
+import { LogLevel } from './useLogger';
 
 /**
  * @description 실행 가능한 외부 코드

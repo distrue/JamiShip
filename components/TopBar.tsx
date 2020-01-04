@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { MdHome } from 'react-icons/md';
 import { useRouter } from 'next/router';
@@ -9,9 +9,16 @@ interface TopBarProps {
 }
 
 const TopBar = (props: TopBarProps) => {
-  const [helpVisible, setHelpVisible] = useState(props.help !== undefined && props.help.length > 0);
+  const [nv, setNv] = useState(false);
+  const [helpVisible, setHelpVisible] = useState(false);
   const [helpIndex, setHelpIndex] = useState(0);
   const router = useRouter();
+  useEffect(() => {
+    if (!nv && props.help !== undefined && props.help.length > 0) {
+      setNv(true);
+      setHelpVisible(true);
+    }
+  });
   const exitHandler = () => {
     console.log(router.pathname);
     if (router.pathname.startsWith('/learn/')) {

@@ -134,6 +134,9 @@ export class BaseObj {
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
   }
+  setHeight(innerText: string) {
+    this.innerText = innerText;
+  }
   renewInnerRect() {
     const margin = { x: this.size.x / 8, y: this.size.y / 8 };
     this.innerRect = {

@@ -73,7 +73,7 @@ const ItemContainer = styled.div`
   & {
     user-select: none;
     width: 360px;
-    height: 320px;
+    height: 340px;
     padding: 16px;
     box-sizing: border-box;
     margin: 16px;
