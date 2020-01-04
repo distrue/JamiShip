@@ -27,7 +27,6 @@ const Logger = ({ logData, callee }: LoggerProps) => {
     endRef.current!.scrollIntoView();
   });
   useEffect(() => {
-    console.log(logData);
     forceUpdate();
   }, [logData]);
   return (
