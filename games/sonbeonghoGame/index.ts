@@ -1,5 +1,5 @@
+import { types } from 'jamiship';
 import { BaseObj } from './component';
-import { Game } from '../../JamiShip/types';
 
 type filters = 'hairColor' | 'onGlasses' | 'height';
 
@@ -7,15 +7,15 @@ interface SBHGameApi {
   add: (x: number, y: number, objterm: string, traits: any) => unknown;
   bh: (frameNo: number, type: filters, value: string) => unknown;
   desc_add: string
-};
+}
 
-export class SBHGame implements Game<SBHGameApi> {
+export class SBHGame implements types.Game<SBHGameApi> {
   private people: any[] = [];
   private hairs: any[] = [];
   private glasses: any[] = [];
 
   public controllers = { // export controllers
-    desc_add: "trait, objterm을 설정해 person을 생성합니다.",
+    desc_add: 'trait, objterm을 설정해 person을 생성합니다.',
     add: (x: number, y: number, objterm: string, traits: any) => {
       const person = new BaseObj(
         [`/imgs/${objterm}.png`],
@@ -25,7 +25,7 @@ export class SBHGame implements Game<SBHGameApi> {
       );
       this.people.push(person);
 
-      if(traits.hairColor) {
+      if (traits.hairColor) {
         const hair = new BaseObj(
           [`/imgs/hair_${traits.hairColor}.png`],
           '',
@@ -34,16 +34,16 @@ export class SBHGame implements Game<SBHGameApi> {
         );
         this.hairs.push(hair);
       }
-      if(traits.onGlasses) {
+      if (traits.onGlasses) {
         const glass = new BaseObj(
-          [`/imgs/glass.png`],
+          ['/imgs/glass.png'],
           '',
           { x: 50, y: 80 },
           x && y ? { x, y } : undefined,
         );
         this.glasses.push(glass);
       }
-      if(traits.height) {
+      if (traits.height) {
         console.log(traits.height);
         const hair = new BaseObj(
           [],
@@ -54,16 +54,16 @@ export class SBHGame implements Game<SBHGameApi> {
         this.hairs.push(hair);
       }
     },
-    desc_bh: "자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.",
+    desc_bh: '자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.',
     bh: (frameNo: number, type?: filters, value?: string) => {
       console.log(type!, value!);
-      if(frameNo < this.people.length) {
-        this.people[frameNo].addSrc(`/imgs/dead.png`);
+      if (frameNo < this.people.length) {
+        this.people[frameNo].addSrc('/imgs/dead.png');
         this.people[frameNo].draw();
-        this.people[0].addSrc(`/imgs/dead.png`);
+        this.people[0].addSrc('/imgs/dead.png');
         this.people[0].draw();
       }
-    }
+    },
   };
   /**
    * @description 단위 frame 동안 game 자체의 controller를 동작시키는 함수
@@ -82,7 +82,7 @@ export class SBHGame implements Game<SBHGameApi> {
         .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200)),
     ];
     await Promise.all(pms); */
-    if(frameNo < 3) return undefined;
+    if (frameNo < 3) return undefined;
     return true;
   }
 

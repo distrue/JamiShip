@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { MdRefresh, MdPlayArrow } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { useEngine, useLogger } from '../../JamiShip';
-import { UserCode, LogItem } from '../../JamiShip/types';
+import { useEngine, useLogger, types } from 'jamiship';
 import Logger from '../../components/Logger';
 import TopBar from '../../components/TopBar';
 import { GameDisplay, EmptyGame } from '../../games/gameList';
@@ -30,13 +29,16 @@ export default function NamePage() {
   const router = useRouter();
   // eslint-disable-next-line
   const [executed, setExecuted] = useState(false);
-  const [code, setCode] = useState("");
-  const [codeObj, setCodeObj] = useState<UserCode | null>(null);
+  const [code, setCode] = useState('');
+  const [codeObj, setCodeObj] = useState<types.UserCode | null>(null);
   const [help, setHelp] = useState<string[]>([]);
-  const [logData, setLogData] = useState<LogItem[]>([]);
-  const logger = useLogger(logData, setLogData);
+  const [logData, setLogData] = useState<types.LogItem[]>([]);
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
+
+
+  console.log(typeof useLogger);
+  const logger = useLogger(logData, setLogData);
 
   React.useEffect(() => {
     const key = router.query.name;

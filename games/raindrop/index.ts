@@ -1,12 +1,12 @@
+import { types } from 'jamiship';
 import RaindropObj from './raindrop';
 import TravelerObj from './traveler';
-import { Game } from '../../JamiShip/types';
 
 interface RaindropGameApi {
   addRaindrop: (x: number, y: number) => unknown;
 }
 
-export class RaindropGame implements Game<RaindropGameApi> {
+export class RaindropGame implements types.Game<RaindropGameApi> {
   private raindrops: RaindropObj[] = [];
   private traveler: TravelerObj | null;
   public controllers = { // export controllers
@@ -16,7 +16,7 @@ export class RaindropGame implements Game<RaindropGameApi> {
         ['/raindrop/rain.png'],
         false,
         { x: 20, y: 20 },
-        x ? { x, y: 0 } : {x: 0, y: 0}
+        x ? { x, y: 0 } : { x: 0, y: 0 },
       );
       this.raindrops.push(raindropInst);
     },
@@ -33,7 +33,7 @@ export class RaindropGame implements Game<RaindropGameApi> {
       travelerMoving.forEach((element) => {
         travelerMove = travelerMove.then(() => this.traveler!.moveTo(element[0], this.traveler!.getLocation().y, element[1]));
       });
-    }
+    },
   };
   /**
    * @description 단위 frame 동안 game 자체의 controller를 동작시키는 함수

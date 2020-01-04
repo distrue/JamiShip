@@ -1,11 +1,11 @@
+import { types } from 'jamiship';
 import { BaseObj } from './circle';
-import { Game } from '../../JamiShip/types';
 
 interface CircleGameApi {
   add: (x: number, y: number) => unknown;
 }
 
-export class CircleGame implements Game<CircleGameApi> {
+export class CircleGame implements types.Game<CircleGameApi> {
   private circles: any[] = [];
 
   public controllers = { // export controllers
