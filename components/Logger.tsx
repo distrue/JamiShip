@@ -12,7 +12,6 @@ interface LoggerProps {
 }
 
 const Logger = (props: LoggerProps) => {
-  console.log(props.count);
   const mapLogItem = (v: LogItem, i: number) => (
     <div className={v.level} key={i}>{v.value}</div>
   )

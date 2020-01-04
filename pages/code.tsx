@@ -48,14 +48,22 @@ const CodePage = (): JSX.Element => {
       alert('Code is not loaded!');
       return;
     }
-    codeObj.init();
+    try {
+      codeObj.init();
+    } catch (err) {
+      logger.error(err.toString());
+    }
   };
   const loopHandler = () => {
     if (codeObj === null) {
       alert('Code is not loaded!');
       return;
     }
-    codeObj.loop();
+    try {
+      codeObj.loop();
+    } catch (err) {
+      logger.error(err.toString());
+    }
   };
 
   return (
