@@ -20,7 +20,7 @@ const Logger = ({ logData, callee }: LoggerProps) => {
 
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
   const mapLogItem = (v: LogItem, i: number) => (
-    <div className={v.level} key={i}>{v.value}</div>
+    <div className={v.level} key={i} style={{whiteSpace: "pre"}}>{v.value}</div>
   );
 
   useEffect(() => {
@@ -39,6 +39,10 @@ const Logger = ({ logData, callee }: LoggerProps) => {
 };
 
 const Container = styled.div`
+  .system {
+    color: #FFF;
+    font-style: italic;
+  }
   .log, .dir {
     color: #FFF;
   }

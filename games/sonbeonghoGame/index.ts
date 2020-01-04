@@ -10,6 +10,7 @@ type filters = 'hairColor' | 'onGlasses' | 'height';
 interface SBHGameApi {
   add: (x: number, y: number, objterm: string, traits: any) => unknown;
   bh: (frameNo: number, type: filters, value: string) => unknown;
+  desc_add: string
 };
 
 export class SBHGame implements Game<SBHGameApi> {
@@ -37,7 +38,7 @@ export class SBHGame implements Game<SBHGameApi> {
       this.people.push(person);
       person.draw();
     },
-    desc_bh: 'type과 type에 맞는 value를 입력받아 그 value를 지닌 사람을 죽입니다',
+    desc_bh: "자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.",
     bh: (frameNo: number, type?: filters, value?: string) => {
       console.log(type!, value!);
       if (frameNo <= this.people.length) {

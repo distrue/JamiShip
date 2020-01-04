@@ -1,17 +1,21 @@
 import {LogItem} from './types';
 
-const dirPrint = (value: Object) => {
-    let ans = '[Game Object]';
+export type LogLevel = 'system' | 'dir' | 'log' | 'warn' | 'error';
+
+const dirPrint = (value: any) => {
+    let ans = `[Object method descriptions]`;
     for (const [key, val] of Object.entries(value)) {
-      ans = ans.concat('\n', `${key}: ${val.toString()}`);
+      if(typeof val === 'function') {
+        ans = ans.concat('\n', `${key}: ${value[`desc_${key}`]}`);
+      }
     }
-    console.log(ans);
+
     return ans;
   };
 
 // eslint-disable-next-line
 const logger = (logData: LogItem[], setLogData: any) => {
-  return (level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
+  return (level: LogLevel, value: any) => {
     const log = logData;
     log.push({
         level,
