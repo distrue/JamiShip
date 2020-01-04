@@ -27,3 +27,8 @@ dir: (input: string) => unknown;
 export interface RunnerControls {
 setGame: (id: string) => unknown;
 }
+
+export interface Game<T> {
+  controllers: T;
+  frame: (frameNo: number) => Promise<any>;
+}
