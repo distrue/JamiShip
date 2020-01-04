@@ -1,0 +1,30 @@
+{
+  "extends": ["react-app", "prettier", "airbnb"],
+  "plugins": ["prettier", "react"],
+  "rules": {
+    "prettier/prettier": ["warn"],
+    "react/jsx-filename-extension": 0,
+    "react/jsx-curly-brace-presence": "off",
+    "max-len": ["error", { "code": 160, "tabWidth": 2 }],
+    "import/no-unresolved": "off",
+    "object-curly-newline": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/label-has-associated-control": [
+      "warn",
+      {
+        "labelComponents": ["label"],
+        "labelAttributes": ["htmlFor"],
+        "controlComponents": ["Text"]
+      }
+    ],
+    "dot-notation": ["warn", { "allowPattern": "^[a-z]+(_[a-z]+)+$" }],
+    "no-param-reassign": ["error", { "props": false }],
+    "import/extensions": ["warn", "never"]
+  },
+  "parserOptions": {
+    "project": "tsconfig.json"
+  }
+}
