@@ -4,14 +4,13 @@ import dynamic from 'next/dynamic';
 import useEngine from '../JamiShip/useEngine';
 import { ForeignCode } from '../JamiShip/Execute';
 import Logger, { LogItem } from '../components/Logger';
-import { BaseObj } from '../JamiShip/component';
 
 const CodeEditor = dynamic(import('../components/CodeEditor'), {
   ssr: false,
 });
 
 const defaultCode = `function setup() {
-  
+
 }
 function init() {
     
@@ -26,7 +25,7 @@ export default () => {
   const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
   const [log, setLog] = useState(0);
   const [logData, setLogData] = useState<LogItem[]>([]);
-  const { loadComponents, start, compile } = useEngine();
+  const { start, compile } = useEngine();
 
   // eslint-disable-next-line
   const logger = ((level: 'log' | 'warn' | 'error', value: string) => {
@@ -35,19 +34,12 @@ export default () => {
     setLog(cnt);
     setLogData(data);
   });
-  const [canvases, setCanvases] = React.useState<BaseObj[]>([]);
-
-  React.useEffect(() => {
-    const items = loadComponents(['canvas1', 'canvas2']);
-    setCanvases(items);
-    // eslint-disable-next-line
-  }, []);
 
   const startHandler = () => {
     if (codeObj === null) {
       alert('Code not loaded!');
     } else {
-      start(canvases, logger, codeObj);
+      start(logger, codeObj);
     }
   };
   const compileHandler = () => {
@@ -57,11 +49,6 @@ export default () => {
   return (
     <>
       <Background>
-        {['canvas1', 'canvas2'].map((canvas) => (
-          <canvas key={canvas} className="canvas" id={canvas} width="1000px" height="300px">
-              canvas
-          </canvas>
-        ))}
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />

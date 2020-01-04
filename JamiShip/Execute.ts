@@ -12,7 +12,7 @@ export interface Logger {
  * 단, `logger`는 global 스코프에도 저장됩니다.
  */
 export interface RunnerControls {
-
+  setGame: (id: string) => unknown;
 }
 
 /**
@@ -32,7 +32,8 @@ export interface ForeignCode {
 function makeFunc(input: string): ForeignCode {
   return new Function(`
     return (function() {
-      const JA = window.interfaceJA;
+      const Game = window.interfaceJA;
+      const setGame = Game.setGame;
       ${input}
       const initDefault = () => {
         throw new Error('Exec error: Init undefined');
