@@ -39,7 +39,8 @@ export default function NamePage() {
   const [code, setCode] = useState('');
   const [codeObj, setCodeObj] = useState<types.UserCode | null>(null);
   const [help, setHelp] = useState<string[]>([]);
-  const [logData, setLogData] = useState<types.LogItem[]>([]);
+  const [logData, setLogData] = useState<types.LogItem[]>([]); 
+  const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
 
@@ -102,8 +103,8 @@ const Background = styled.div`
   box-sizing: border-box;
   position: absolute;
   top: 0; left: 0;
-  grid-template-rows: 60% 36px calc(40% - 36px);
-  grid-template-columns: 60% 40%;
+  grid-template-rows: 450px 36px auto;
+  grid-template-columns: 800px auto;
   display: grid;
   canvas {
     position: absolute;
