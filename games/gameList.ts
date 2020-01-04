@@ -5,6 +5,7 @@ export interface GameEntry {
   id: string;
   stub: string;
   tutorial: string[];
+  rating?: number;
 }
 
 const playground = {
@@ -43,6 +44,7 @@ function loop(frameNo) {
   Game.bh(frameNo);
 }`,
   tutorial: [],
+  rating: 2
 };
 
 const raindrop = {
@@ -69,6 +71,7 @@ function loop() {
 
 }`,
   tutorial: [],
+  rating: 4
 };
 
 const shoot = {
@@ -86,7 +89,8 @@ function init() {
 function loop() {
 
 }`,
-tutorial: []
+tutorial: [],
+rating: 2
 };
 
 export const GameDisplay: GameEntry[] = [
