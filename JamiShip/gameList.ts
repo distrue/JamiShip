@@ -30,7 +30,7 @@ const sonbeonghoGame = {
   id: 'sonbeonghoGame',
   desc: '손병호 게임',
   stub: `function setup() {
-setGame("son");
+setGame("sonbeong");
 }
 function init() {
   people = new People();
