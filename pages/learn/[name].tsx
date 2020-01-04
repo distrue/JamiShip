@@ -41,7 +41,7 @@ export default function NamePage() {
 
   return (
     <>
-      <TopBar />
+      <TopBar help={currentGame.tutorial} />
       <Background>
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />

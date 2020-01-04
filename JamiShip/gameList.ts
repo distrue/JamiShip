@@ -21,7 +21,7 @@ function init() {
 function loop() {
 
 }`,
-  tutorial: [],
+  tutorial: ["플레이그라운드입니다. 원하는 대로 코드를 작성해보세요!"],
 };
 
 const sonbeonghoGame = {
