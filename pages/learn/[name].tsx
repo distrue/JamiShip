@@ -7,7 +7,7 @@ import { useEngine, useLogger } from '../../JamiShip';
 import { UserCode, LogItem } from '../../JamiShip/types';
 import Logger from '../../components/Logger';
 import TopBar from '../../components/TopBar';
-import { GameDisplay, EmptyGame } from '../../JamiShip/gameList';
+import { GameDisplay, EmptyGame } from '../../games/gameList';
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
@@ -85,7 +85,7 @@ const Background = styled.div`
     grid-column: 1 / 2;
     width: 100%;
     height: 100%;
-    background-color: #DDD;
+    background-color: #FFF;
   }
   .cli {
     grid-row: 1 / 4;

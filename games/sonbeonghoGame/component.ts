@@ -99,18 +99,18 @@ export class BaseObj {
   private ctx: CanvasRenderingContext2D;
   private size: { x: number; y: number }; // 사이즈 아마 픽셀단위
   private location: { x: number; y: number }; // 이미지 위치 왼쪽 위가 0,0
-  private overlapable: boolean; // 겹쳐질 수 있는지 true이면 겹쳐질 수 있음.
+  private innerText: string; // 표시할 text
   private innerRect: Rectangular;
   private imgs: HTMLImageElement[];
 
   /**
    * @param canvasId 사용할 canvas의 id
    * @param src 사용할 이미지 src 리스트
-   * @param overlapable 겹쳐지는 것을 허용할지 여부
+   * @param innerText 겹쳐지는 것을 허용할지 여부
    * @param size 이미지의 사이즈
    * @param location 이미지 위치 왼쪽 위가 0,0
    */
-  constructor(srcs: string[], overlapable: boolean, size: { x: number; y: number }, location = { x: 0, y: 0 }) {
+  constructor(srcs: string[], innerText: string, size: { x: number; y: number }, location = { x: 0, y: 0 }) {
     const canvasParent = document.getElementById('canvas-container');
     this.canvas = document.createElement('canvas');
     this.canvas.width = 800;
@@ -120,7 +120,7 @@ export class BaseObj {
     this.srcs = srcs;
     this.location = location;
     this.size = size;
-    this.overlapable = overlapable;
+    this.innerText = innerText;
     this.imgs = [];
     const margin = { x: this.size.x / 10, y: this.size.y / 10 };
     this.innerRect = {
@@ -133,9 +133,6 @@ export class BaseObj {
   }
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
-  }
-  delete() {
-    this.canvas.parentNode!.removeChild(this.canvas);
   }
   renewInnerRect() {
     const margin = { x: this.size.x / 8, y: this.size.y / 8 };
@@ -158,54 +155,11 @@ export class BaseObj {
   getInnerRect() {
     return this.innerRect;
   }
-  getOverlapable() {
-    return this.overlapable;
-  }
-  /**
-   * @description 다른 BaseObj 인스턴스들 리스트를 입력받아 양쪽다 overlapable하지 않고 위치가 겹쳤을 경우 충돌해 reject함
-   * 충돌하지 않았을 경우 다 실행된 후에 resolve
-   * @param items BaseObj 인스턴스 리스트
-   * @param x 옮길 위치 x
-   * @param y 옮길 위치 y
-   * @param time 총 걸릴 시간
-   * @param interval 한 프레임(기본 16초)
-   */
-  moveToWithCheckBump(items: BaseObj[], x: number, y: number, time: number, interval: number = 16) {
-    if (this.getOverlapable()) {
-      return this.moveTo(x, y, time, interval);
-    }
-    let number = time / interval;
-    const xGap = (x - this.location.x) / number;
-    const yGap = (y - this.location.y) / number;
-    return new Promise((resolve, reject) => {
-      const move = () => {
-        number -= 1;
-        if (number >= 0) {
-          for (let i = 0; i < items.length; i += 1) {
-            const bumped = checkRectOverlap(this.getInnerRect(), items[i].getInnerRect());
-            if (bumped && items[i].getOverlapable() === false) {
-              return reject();
-            }
-          }
-          setTimeout(move, interval);
-        } else {
-          this.setLocation(x, y);
-          this.draw();
-          resolve();
-          return true;
-        }
 
-        this.setLocation(this.location.x + xGap, this.location.y + yGap);
-        this.draw();
-        return true;
-      };
-      move();
-    });
-  }
   moveTo(x: number, y: number, time: number, interval: number = 16) {
     let number = time / interval;
-    const xGap = (x - this.location.x) / number;
-    const yGap = (y - this.location.y) / number;
+    const xGap = (x - this.location.x) / (time / interval);
+    const yGap = (y - this.location.y) / (time / interval);
     return new Promise((resolve) => {
       const move = () => {
         number -= 1;
@@ -251,7 +205,8 @@ export class BaseObj {
       for (let i = 0; i < this.imgs.length; i += 1) {
         this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
-      this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
+      this.ctx.fillText(this.innerText, this.location.x + 40, this.location.y + 40);
+      // this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
     });
   }
 }

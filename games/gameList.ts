@@ -30,17 +30,17 @@ const sonbeonghoGame = {
   id: 'sonbeonghoGame',
   desc: '손병호 게임',
   stub: `function setup() {
-setGame("sonbeong");
+  setGame("sonbeong");
+  Game.add(150, 200, 'character', { hairColor: 'black',  height: 190 });
+  Game.add(300, 100, 'character', { hairColor: 'green', height: 190 });
+  Game.add(450, 200, 'character', { onGlasses: true, hairColor: 'black', height: 180 });
+  Game.add(300, 300, 'character', { onGlasses: true, hairColor: 'red', height: 180 });
+  logger.dir(Game);
 }
 function init() {
-  people = new People();
-  people.createPerson('p1');
-  people.createPerson('p2', { onGlasses: true, hairColor: 'black', height: 180 });
-  people.createPerson('p3', { hairColor: 'brown', height: 190 });
-  people.createPerson('p4', { onGlasses: true, hairColor: 'red', height: 180 });
 }
-function loop() {
-
+function loop(frameNo) {
+  Game.bh(frameNo);
 }`,
   tutorial: [],
 };

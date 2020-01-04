@@ -5,7 +5,7 @@ import { LogLevel } from "./useLogger";
  */
 export interface UserCode {
   init: () => unknown;
-  loop: () => unknown;
+  loop: (frameNo: number) => unknown;
   setup: () => unknown;
 }
 
@@ -26,4 +26,9 @@ dir: (input: string) => unknown;
 */
 export interface RunnerControls {
 setGame: (id: string) => unknown;
+}
+
+export interface Game<T> {
+  controllers: T;
+  frame: (frameNo: number) => Promise<any>;
 }

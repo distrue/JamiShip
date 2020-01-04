@@ -134,6 +134,9 @@ export class BaseObj {
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
   }
+  delete() {
+    this.canvas.parentNode!.removeChild(this.canvas);
+  }
   renewInnerRect() {
     const margin = { x: this.size.x / 8, y: this.size.y / 8 };
     this.innerRect = {
@@ -142,7 +145,6 @@ export class BaseObj {
       y1: this.location.y + margin.y,
       y2: this.location.y + this.size.y - margin.y,
     };
-    this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
   }
   setLocation(x: number, y: number) {
     this.location = { x, y };
@@ -172,8 +174,8 @@ export class BaseObj {
       return this.moveTo(x, y, time, interval);
     }
     let number = time / interval;
-    const xGap = (x - this.location.x) / (time / interval);
-    const yGap = (y - this.location.y) / (time / interval);
+    const xGap = (x - this.location.x) / number;
+    const yGap = (y - this.location.y) / number;
     return new Promise((resolve, reject) => {
       const move = () => {
         number -= 1;
@@ -201,8 +203,8 @@ export class BaseObj {
   }
   moveTo(x: number, y: number, time: number, interval: number = 16) {
     let number = time / interval;
-    const xGap = (x - this.location.x) / (time / interval);
-    const yGap = (y - this.location.y) / (time / interval);
+    const xGap = (x - this.location.x) / number;
+    const yGap = (y - this.location.y) / number;
     return new Promise((resolve) => {
       const move = () => {
         number -= 1;
@@ -248,7 +250,6 @@ export class BaseObj {
       for (let i = 0; i < this.imgs.length; i += 1) {
         this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
-      // this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
     });
   }
 }
