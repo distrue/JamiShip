@@ -1,9 +1,5 @@
 import { BaseObj } from './circle';
-
-export default interface Game<T> {
-  controllers: T;
-  frame: (frameNo: number) => Promise<boolean>;
-};
+import { Game } from '../../JamiShip/types';
 
 interface CircleGameApi {
   add: (x: number, y: number) => unknown;
@@ -44,7 +40,7 @@ export class CircleGame implements Game<CircleGameApi> {
         .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200)),
     ];
     await Promise.all(pms);
-    return false;
+    return true;
   }
 
   constructor() {

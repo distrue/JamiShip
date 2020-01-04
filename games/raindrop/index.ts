@@ -1,10 +1,6 @@
 import RaindropObj from './raindrop';
 import TravelerObj from './traveler';
-
-export default interface Game<T> {
-  controllers: T;
-  frame: (frameNo: number) => Promise<boolean>;
-}
+import { Game } from '../../JamiShip/types';
 
 interface RaindropGameApi {
   addRaindrop: (x: number, y: number) => unknown;
@@ -72,7 +68,7 @@ export class RaindropGame implements Game<RaindropGameApi> {
     await Promise.all(pms).then(() => {
       this.raindrops = [] as RaindropObj[];
     });
-    return false;
+    return true;
   }
 
   constructor() {
