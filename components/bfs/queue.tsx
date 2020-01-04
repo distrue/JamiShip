@@ -25,7 +25,7 @@ const Queue = styled.div`
   transform: translate(-50%, -50%);
   width: 500px;
   height: 100px;
-  background-color: #26c4d8;
+  background-color: #e8affe;
   display: flex;
   flex-direction: row;
   .item {

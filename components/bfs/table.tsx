@@ -17,7 +17,7 @@ export default ({ tempColor, tempNum }: Params) => {
     for (let i = 0; i < tempColor.length; i += 1) {
       for (let j = 0; j < tempColor[0].length; j += 1) {
         ctx.beginPath();
-        ctx.lineWidth = 5;
+        ctx.lineWidth = 1;
         ctx.fillStyle = tempColor[i][j] === false ? 'white' : 'black';
         ctx.strokeStyle = 'black';
         const x = 25 + 50 * j;
@@ -32,10 +32,6 @@ export default ({ tempColor, tempNum }: Params) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  /* const Td = (props: Props) => (
-    <td className={`${tempColor[props.row][props.col] === false ? 'white' : 'black'}`}>
-    {tempNum[props.row][props.col] >= 0 ? tempNum[props.row][props.col] : ''}</td>
-  ); */
   return (
     <Table>
       <canvas id="map-canvas" width="300px" height="300px">
