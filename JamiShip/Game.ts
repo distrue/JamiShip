@@ -1,4 +1,4 @@
-import { BaseObj } from './component';
+import { BaseObj } from './games/sonbeonghoGame/component';
 
 export default interface Game<T> {
   controllers: T;

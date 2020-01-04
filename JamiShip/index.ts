@@ -1,2 +1,2 @@
-export { default as Component } from './component';
+export { default as Component } from './games/sonbeonghoGame/component';
 export { default as Engine } from './useEngine';

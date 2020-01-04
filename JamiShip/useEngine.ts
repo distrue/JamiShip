@@ -1,5 +1,5 @@
 import Executor, { LogFunc, ForeignCode } from './Execute';
-import Game, { CircleGame } from './Game';
+import Game, { SBHGame } from './games/sonbeonghoGame';
 
 let exec: Executor;
 let game: Game<any>;
@@ -8,7 +8,7 @@ export default function useEngine() {
   const setGame = (id: string) => {
     console.log(id);
     // TODO: parse id string
-    game = new CircleGame();
+    game = new SBHGame();
     exec.inject(game.controllers);
   };
 
