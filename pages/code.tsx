@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import CodeEditor from '../components/CodeEditor';
-import injectCode from '../lib/inject';
-import { build, ForeignCode } from '../lib/execute';
+import { injectCode, build, ForeignCode } from '../JamiShip/Execute';
 import Logger, {LogItem} from '../components/Logger';
 
 const defaultCode = `const a = 123;
@@ -19,12 +18,13 @@ function loop() {
 const CodePage = (): JSX.Element => {
   const [codeValue, setCodeValue] = useState(defaultCode);
   const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
+  const [injectKey, setInjectKey] = useState('');
   const [log, setLog] = useState(0);
   const [logData, setLogData] = useState<LogItem[]>([]);
 
   const logFactory = (level: 'log' | 'warn' | 'error', value: string) => {
     const data = logData;
-    const cnt = data.push({level, value});
+    const cnt = data.push({level, value: value.toString()});
     setLog(cnt);
     setLogData(data);
   }
@@ -40,8 +40,12 @@ const CodePage = (): JSX.Element => {
   }
 
   const loadHandler = () => {
-    const injectCode = injector();
-    setCodeObj(build(codeValue, injectCode));
+    const newInjectKey = injector();
+    setCodeObj(build(codeValue, newInjectKey));
+    if (injectKey !== '') {
+      delete (window as any)[injectKey];
+    }
+    setInjectKey(newInjectKey);
   };
   const initHandler = () => {
     if (codeObj === null) {
@@ -51,7 +55,7 @@ const CodePage = (): JSX.Element => {
     try {
       codeObj.init();
     } catch (err) {
-      logger.error(err.toString());
+      logger.error(err);
     }
   };
   const loopHandler = () => {
@@ -62,7 +66,7 @@ const CodePage = (): JSX.Element => {
     try {
       codeObj.loop();
     } catch (err) {
-      logger.error(err.toString());
+      logger.error(err);
     }
   };
 
