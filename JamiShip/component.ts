@@ -1,20 +1,47 @@
 /*
 예제코드
-import {BaseObj, checkRectOverlap} from './classess/index';
+import React from 'react';
+import styled from 'styled-components';
 
-const App: React.FC = () => {
+import { BaseObj, checkRectOverlap} from '../JamiShip/component';
+
+export default () => {
+  // eslint-disable-next-line
+  const [canvases] = React.useState(['canvas1', 'canvas2']);
   React.useEffect(() => {
-    const testBase = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, {x: 100, y: 100});
-    const testBase2 = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, {x: 100, y: 100}, {x: 80, y: 80});
+    const testBase = new BaseObj('canvas1', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 });
+    const testBase2 = new BaseObj('canvas2', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 }, { x: 100, y: 100 });
+    testBase.moveToWithCheckBump([testBase2], 550, 200, 1000).then(() => testBase2.moveToWithCheckBump([testBase], 700, 120, 2000))
+    .then(() => testBase.moveToWithCheckBump([testBase2], 400, 170, 1500)).then(() => testBase2.moveToWithCheckBump([testBase], 300, 200, 200));
+
+    testBase2.moveToWithCheckBump([testBase], 450, 250, 1000).then(() => testBase.moveToWithCheckBump([testBase2], 200, 10, 2000))
+    .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200));
     console.log(testBase.getInnerRect());
     console.log(checkRectOverlap(testBase.getInnerRect(), testBase2.getInnerRect()));
-  }, [])
+  }, []);
+
   return (
-    <div className="App">
-      <canvas id='map-canvas' height='650px' width='1000px'></canvas>
-    </div>
+    <>
+      <Background>
+        {canvases.map((name) => {
+          return (
+            <canvas key={name} className="canvas" id={name} width="1000px" height="300px">
+              canvas
+            </canvas>
+          );
+        })}
+        ...
+      </Background>
+    </>
   );
-}
+};
+
+const Background = styled.div`
+  ...
+  canvas {
+    position: absolute;
+  }
+  ...
  */
 function loadImage(urls: string[], idx: number): Promise<any[]> {
   if (idx === -1) {
@@ -41,9 +68,21 @@ export function checkRectOverlap(rectA: Rectangular, rectB: Rectangular) {
   const centerA = { x: (rectA.x1 + rectA.x2) / 2, y: (rectA.y1 + rectA.y2) / 2 };
   const centerB = { x: (rectB.x1 + rectB.x2) / 2, y: (rectB.y1 + rectB.y2) / 2 };
   const absGradient = Math.abs((centerB.y - centerA.y) / (centerB.x - centerA.x));
-  const lengthBetweenAB = Math.abs((centerB.x - centerA.x) * absGradient);
-  const lengthSideA = Math.abs((rectA.x1 - centerA.x) * absGradient);
-  const lengthSideB = Math.abs((rectB.x1 - centerB.x) * absGradient);
+  const absGradientA = Math.abs((rectA.y2 - rectA.y1) / (rectA.x2 - rectA.x1));
+  const absGradientB = Math.abs((rectB.y2 - rectB.y1) / (rectB.x2 - rectB.x1));
+  const lengthBetweenAB = Math.sqrt((centerB.x - centerA.x) ** 2 + (centerB.y - centerA.y) ** 2);
+  let lengthSideA: number;
+  if (absGradient > absGradientA) {
+    lengthSideA = Math.sqrt(((rectA.y1 - centerA.y) / absGradient) ** 2 + (rectA.y1 - centerA.y) ** 2);
+  } else {
+    lengthSideA = Math.sqrt(((rectA.x1 - centerA.x) * absGradient) ** 2 + (rectA.x1 - centerA.x) ** 2);
+  }
+  let lengthSideB: number;
+  if (absGradient > absGradientB) {
+    lengthSideB = Math.sqrt(((rectB.y1 - centerB.y) / absGradient) ** 2 + (rectB.y1 - centerB.y) ** 2);
+  } else {
+    lengthSideB = Math.sqrt(((rectB.x1 - centerB.x) * absGradient) ** 2 + (rectB.x1 - centerB.x) ** 2);
+  }
   if (lengthBetweenAB >= lengthSideA + lengthSideB) {
     // 안만남
     return false;
@@ -78,21 +117,32 @@ export class BaseObj {
     this.location = location;
     this.size = size;
     this.overlapable = overlapable;
-    const margin = { x: size.x / 10, y: size.y / 10 };
-    this.innerRect = {
-      x1: location.x + margin.x,
-      x2: location.x + size.x - margin.x,
-      y1: location.y + margin.y,
-      y2: location.y + size.y - margin.y,
-    };
     this.imgs = [];
+    const margin = { x: this.size.x / 10, y: this.size.y / 10 };
+    this.innerRect = {
+      x1: this.location.x + margin.x,
+      x2: this.location.x + this.size.x - margin.x,
+      y1: this.location.y + margin.y,
+      y2: this.location.y + this.size.y - margin.y,
+    };
     this.draw();
   }
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
   }
+  renewInnerRect() {
+    const margin = { x: this.size.x / 8, y: this.size.y / 8 };
+    this.innerRect = {
+      x1: this.location.x + margin.x,
+      x2: this.location.x + this.size.x - margin.x,
+      y1: this.location.y + margin.y,
+      y2: this.location.y + this.size.y - margin.y,
+    };
+    this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
+  }
   setLocation(x: number, y: number) {
     this.location = { x, y };
+    this.renewInnerRect();
     this.draw();
   }
   getLocation() {
@@ -103,6 +153,69 @@ export class BaseObj {
   }
   getOverlapable() {
     return this.overlapable;
+  }
+  /**
+   * @description 다른 BaseObj 인스턴스들 리스트를 입력받아 양쪽다 overlapable하지 않고 위치가 겹쳤을 경우 충돌해 reject함
+   * 충돌하지 않았을 경우 다 실행된 후에 resolve
+   * @param items BaseObj 인스턴스 리스트
+   * @param x 옮길 위치 x
+   * @param y 옮길 위치 y
+   * @param time 총 걸릴 시간
+   * @param interval 한 프레임(기본 16초)
+   */
+  moveToWithCheckBump(items: BaseObj[], x: number, y: number, time: number, interval: number = 16) {
+    if (this.getOverlapable()) {
+      return this.moveTo(x, y, time, interval);
+    }
+    let number = time / interval;
+    const xGap = (x - this.location.x) / (time / interval);
+    const yGap = (y - this.location.y) / (time / interval);
+    return new Promise((resolve, reject) => {
+      const move = () => {
+        number -= 1;
+        if (number >= 0) {
+          for (let i = 0; i < items.length; i += 1) {
+            const bumped = checkRectOverlap(this.getInnerRect(), items[i].getInnerRect());
+            if (bumped && items[i].getOverlapable() === false) {
+              return reject();
+            }
+          }
+          setTimeout(move, interval);
+        } else {
+          this.setLocation(x, y);
+          this.draw();
+          resolve();
+          return true;
+        }
+
+        this.setLocation(this.location.x + xGap, this.location.y + yGap);
+        this.draw();
+        return true;
+      };
+      move();
+    });
+  }
+  moveTo(x: number, y: number, time: number, interval: number = 16) {
+    let number = time / interval;
+    const xGap = (x - this.location.x) / (time / interval);
+    const yGap = (y - this.location.y) / (time / interval);
+    return new Promise((resolve) => {
+      const move = () => {
+        number -= 1;
+        if (number >= 0) {
+          setTimeout(move, interval);
+        } else {
+          this.setLocation(x, y);
+          this.draw();
+          resolve();
+          return true;
+        }
+        this.setLocation(this.location.x + xGap, this.location.y + yGap);
+        this.draw();
+        return true;
+      };
+      move();
+    });
   }
   clear() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -131,6 +244,7 @@ export class BaseObj {
       for (let i = 0; i < this.imgs.length; i += 1) {
         this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
+      this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
     });
   }
 }
