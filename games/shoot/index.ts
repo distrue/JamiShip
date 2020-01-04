@@ -1,4 +1,4 @@
-import { Game } from "../../types";
+import { Game } from "../../JamiShip/types";
 
 interface Position {
   x: number;

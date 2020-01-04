@@ -145,7 +145,6 @@ export class BaseObj {
       y1: this.location.y + margin.y,
       y2: this.location.y + this.size.y - margin.y,
     };
-    this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
   }
   setLocation(x: number, y: number) {
     this.location = { x, y };
@@ -251,7 +250,6 @@ export class BaseObj {
       for (let i = 0; i < this.imgs.length; i += 1) {
         this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
-      this.ctx.fillRect(this.innerRect.x1, this.innerRect.y1, this.innerRect.x2 - this.innerRect.x1, this.innerRect.y2 - this.innerRect.y1);
     });
   }
 }

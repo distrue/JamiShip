@@ -1,9 +1,9 @@
 import Executor from './core';
 import { LogFunc, UserCode, Game } from './types';
-import { CircleGame } from './games/circleGame';
-import {SBHGame} from './games/sonbeonghoGame';
-import {RaindropGame} from '../JamiShip/games/raindrop';
-import ShootGame from './games/shoot';
+import { CircleGame } from '../games/circleGame';
+import {SBHGame} from '../games/sonbeonghoGame';
+import {RaindropGame} from '../games/raindrop';
+import ShootGame from '../games/shoot';
 
 const GAMES = {
   circle: CircleGame,
@@ -38,9 +38,6 @@ export default function useEngine() {
     try {
       while (frameNo < 10) {
         codeObj.loop(frameNo);
-        logger('system', `${frameNo}프레임 실행`);
-      while (frameNo < 2) {
-        codeObj.loop();
         logger('system', `${frameNo}프레임 실행`);
         const result = await game.frame(frameNo);
         if (result !== undefined) {
