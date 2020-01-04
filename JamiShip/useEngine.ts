@@ -1,5 +1,8 @@
+import Executor, { LogFunc, ForeignCode } from "./Execute";
+
 export default function useEngine() {
-  const frameRun = (logger:any, codeObj:any) => {
+  let exec: Executor;
+  const frameRun = (logger: LogFunc, codeObj: ForeignCode) => {
     if (codeObj === null) {
       alert('Code is not loaded!');
       return;
@@ -11,11 +14,7 @@ export default function useEngine() {
     }
   };
 
-  const init = (logger:any, codeObj:any) => {
-    if (codeObj === null) {
-      alert('Code is not loaded!');
-      return;
-    }
+  const init = (logger: LogFunc, codeObj: ForeignCode) => {
     try {
       codeObj.init();
     } catch (err) {
@@ -23,7 +22,7 @@ export default function useEngine() {
     }
   };
 
-  const loop = (logger:any, codeObj: any, frame: any) => {
+  const loop = (logger: LogFunc, codeObj: ForeignCode, frame: any) => {
     setTimeout(async () => {
       loop(logger, codeObj, frame);
       if (frame.startFrame - 1 === frame.endFrame) {
@@ -35,12 +34,11 @@ export default function useEngine() {
     }, 200);
   };
 
-  const start = (logger:any, codeObj: any) => {
+  const start = (logger: LogFunc, codeObj: ForeignCode) => {
     const frame = {
       startFrame: 0,
       endFrame: 0,
     };
-
     try {
       init(logger, codeObj);
       loop(logger, codeObj, frame);
@@ -49,7 +47,10 @@ export default function useEngine() {
     }
   };
 
-  const compile = (exec:any, setCodeObj:any, logger:any, code: any) => {
+  const compile = (setCodeObj: (obj: ForeignCode) => unknown, logger: LogFunc, code: string) => {
+    if (!exec) {
+      exec = new Executor(logger, {});
+    }
     try {
       exec.setCode(code);
       setCodeObj(exec.getExec());

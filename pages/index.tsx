@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import useEngine from '../JamiShip/useEngine';
-import Executor, { ForeignCode } from '../JamiShip/Execute';
+import { ForeignCode } from '../JamiShip/Execute';
 import Logger, { LogItem } from '../components/Logger';
 import { BaseObj, checkRectOverlap } from '../JamiShip/component';
 
@@ -10,10 +10,16 @@ const CodeEditor = dynamic(import('../components/CodeEditor'), {
   ssr: false,
 });
 
+const defaultCode = `function init() {
+    
+}
+function loop() {
+    
+}`;
+
 export default () => {
   // eslint-disable-next-line
-  let [exec, setExec] = useState<Executor>();
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(defaultCode);
   const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
   const [log, setLog] = useState(0);
   const [logData, setLogData] = useState<LogItem[]>([]);
@@ -28,7 +34,6 @@ export default () => {
   });
 
   React.useEffect(() => {
-    setExec(new Executor(logger, {}));
     const testBase = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, { x: 100, y: 100 });
     const testBase2 = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, { x: 100, y: 100 }, { x: 80, y: 80 });
     console.log(testBase.getInnerRect());
@@ -36,6 +41,16 @@ export default () => {
     // eslint-disable-next-line
   }, []);
 
+  const startHandler = () => {
+    if (codeObj === null) {
+      alert('Code not loaded!')
+    } else {
+      start(logger, codeObj);
+    }
+  }
+  const compileHandler = () => {
+    compile(setCodeObj, logger, code);
+  }
 
   return (
     <>
@@ -46,10 +61,9 @@ export default () => {
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />
-            state
         </div>
-        <button type="button" className="t1" onClick={() => compile(exec, setCodeObj, logger, code)}>Reload</button>
-        <button type="button" className="t2" onClick={() => start(logger, codeObj)}>Init()</button>
+        <button type="button" className="t1" onClick={compileHandler}>Reload</button>
+        <button type="button" className="t2" onClick={startHandler}>Init()</button>
       </Background>
     </>
   );

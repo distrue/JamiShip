@@ -1,6 +1,6 @@
 import AceEditor from "react-ace";
 
-import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-monokai";
 
 
@@ -16,7 +16,7 @@ const CodeEditor = (props: CodeEditorProps) => (
   //   props.onChange(e.target.value);
   // }} style={props.style} />
   <AceEditor
-    mode="java"
+    mode="javascript"
     theme="monokai"
     className={props.className}
     value={props.value}

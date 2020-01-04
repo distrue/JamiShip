@@ -17,7 +17,7 @@ const Logger = (props: LoggerProps) => {
   );
   return (
     <Container>
-      {props.logData.map(mapLogItem)};
+      {props.logData.map(mapLogItem)}
     </Container>
   );
 };
