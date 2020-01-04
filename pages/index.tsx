@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import useEngine from '../JamiShip/useEngine';
 import { ForeignCode } from '../JamiShip/Execute';
 import Logger, { LogItem } from '../components/Logger';
-import { BaseObj, checkRectOverlap } from '../JamiShip/component';
+import { BaseObj } from '../JamiShip/component';
 
 const CodeEditor = dynamic(import('../components/CodeEditor'), {
   ssr: false,
@@ -32,12 +32,16 @@ export default () => {
     setLog(cnt);
     setLogData(data);
   });
+  const [canvases] = React.useState(['canvas1', 'canvas2']);
 
   React.useEffect(() => {
-    const testBase = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, { x: 100, y: 100 });
-    const testBase2 = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, { x: 100, y: 100 }, { x: 80, y: 80 });
-    console.log(testBase.getInnerRect());
-    console.log(checkRectOverlap(testBase.getInnerRect(), testBase2.getInnerRect()));
+    const testBase = new BaseObj('canvas1', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 });
+    const testBase2 = new BaseObj('canvas2', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 }, { x: 100, y: 100 });
+    testBase.moveToWithCheckBump([testBase2], 550, 200, 1000).then(() => testBase2.moveToWithCheckBump([testBase], 700, 120, 2000))
+      .then(() => testBase.moveToWithCheckBump([testBase2], 400, 170, 1500)).then(() => testBase2.moveToWithCheckBump([testBase], 300, 200, 200));
+
+    testBase2.moveToWithCheckBump([testBase], 450, 250, 1000).then(() => testBase.moveToWithCheckBump([testBase2], 200, 10, 2000))
+      .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200));
     // eslint-disable-next-line
   }, []);
 
@@ -54,10 +58,14 @@ export default () => {
 
   return (
     <>
-      <canvas id="map-canvas" width="300px" height="300px">
-        canvas
-      </canvas>
       <Background>
+        {canvases.map((name) => {
+          return (
+            <canvas key={name} className="canvas" id={name} width="1000px" height="300px">
+              canvas
+            </canvas>
+          );
+        })}
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />
@@ -77,6 +85,9 @@ const Background = styled.div`
   grid-template-rows: 60% 40%;
   grid-template-columns: 60% 40%;
   display: grid;
+  canvas {
+    position: absolute;
+  }
   .cli {
     grid-row: 1 / 3;
     grid-column: 2 / 3;
