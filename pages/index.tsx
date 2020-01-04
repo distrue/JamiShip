@@ -8,17 +8,12 @@ export default () => {
     engine();
   }, []);
 
-  return <div>Hello</div>;
-};
-
-export default () => {
   return (
     <Background>
       <div className="canvas">
         canvas
       </div>
-      <div className="cli">
-      </div>
+      <div className="cli" />
       <div className="state">
         state
       </div>
