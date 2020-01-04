@@ -19,9 +19,7 @@ export default function HintModal(props: HintModalProps) {
         &nbsp;도움말
         <MdClose onClick={onClose} />
       </div>
-      <div className="text">
-        {text[index]}
-      </div>
+      <div className="text" dangerouslySetInnerHTML={ {__html: text[index]}} />
       <div className="control">
         <MdNavigateBefore onClick={() => setIndex(Math.max(0, index-1))} />
         <MdNavigateNext onClick={() => setIndex(Math.min(text.length-1, index+1))}/>
@@ -67,6 +65,9 @@ const Container = styled.div`
     height: 100%;
     padding: 8px;
     box-sizing: border-box;
+    & span {
+      margin: 4px;
+    }
   }
   .control {
     grid-row: 3 / 4;

@@ -14,6 +14,7 @@ import { SBHGame } from '../../games/sonbeonghoGame';
 import { RaindropGame } from '../../games/raindrop';
 import { FillBlockGame } from '../../games/fillblock';
 import ShootGame from '../../games/shoot';
+import FactoryGame from '../../games/factory';
 
 const GAMES = {
   circle: CircleGame,
@@ -21,12 +22,14 @@ const GAMES = {
   raindrop: RaindropGame,
   shoot: ShootGame,
   fillBlock: FillBlockGame,
+  factory: FactoryGame
 };
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
 
+let inv: any;
 
 export default function NamePage() {
   const router = useRouter();
@@ -39,6 +42,12 @@ export default function NamePage() {
   const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
+
+  if (!inv) {
+    inv = setInterval(() => {
+      setExecuted(executed);
+    }, 500);
+  }
 
   React.useEffect(() => {
     const key = router.query.name;
