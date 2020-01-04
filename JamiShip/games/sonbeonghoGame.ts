@@ -1,4 +1,4 @@
-import { BaseObj } from '../component';
+import { BaseObj } from './circleGame/circle';
 
 export default interface Game<T> {
   controllers: T;
