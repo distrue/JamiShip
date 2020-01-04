@@ -85,7 +85,7 @@ const Background = styled.div`
     grid-column: 1 / 2;
     width: 100%;
     height: 100%;
-    background-color: #DDD;
+    background-color: #FFF;
   }
   .cli {
     grid-row: 1 / 4;
