@@ -14,13 +14,13 @@ interface LoggerProps {
 const Logger = (props: LoggerProps) => {
   const mapLogItem = (v: LogItem, i: number) => (
     <div className={v.level} key={i}>{v.value}</div>
-  )
+  );
   return (
     <Container>
-      {props.logData.map(mapLogItem)};
+      {props.logData.map(mapLogItem)}
     </Container>
   );
-}
+};
 
 const Container = styled.div`
   .log {}
