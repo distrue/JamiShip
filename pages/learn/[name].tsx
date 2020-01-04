@@ -12,6 +12,7 @@ import { GameDisplay, EmptyGame } from '../../games/gameList';
 import { CircleGame } from '../../games/circleGame';
 import { SBHGame } from '../../games/sonbeonghoGame';
 import { RaindropGame } from '../../games/raindrop';
+import { FillBlockGame } from '../../games/fillblock';
 import ShootGame from '../../games/shoot';
 
 const GAMES = {
@@ -19,6 +20,7 @@ const GAMES = {
   sonbeong: SBHGame,
   raindrop: RaindropGame,
   shoot: ShootGame,
+  fillBlock: FillBlockGame,
 };
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
@@ -53,7 +55,7 @@ export default function NamePage() {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
+      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => { });
       setExecuted(true);
     }
   };
