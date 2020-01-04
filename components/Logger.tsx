@@ -1,17 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
-export interface LogItem {
-  level: 'dir' | 'log' | 'warn' | 'error';
-  value: string;
-}
+import { LogItem } from '../JamiShip/types';
 
 interface LoggerProps {
-  count: number;
   logData: any;
 }
 
-const Logger = (props: LoggerProps) => {
+const Logger = ({logData}: LoggerProps) => {
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
   const mapLogItem = (v: LogItem, i: number) => (
     <div className={v.level} key={i}>{v.value}</div>
@@ -19,7 +14,6 @@ const Logger = (props: LoggerProps) => {
   useEffect(() => {
     endRef.current!.scrollIntoView();
   });
-  const { logData } = props;
   return (
     <Container>
       {logData.map(mapLogItem)}

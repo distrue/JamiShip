@@ -1,36 +1,11 @@
-export type LogLevel = 'log' | 'warn' | 'error' | 'dir';
-export type LogFunc = (level: LogLevel, input: any) => unknown;
-
-export interface Logger {
-  log: (input: string) => unknown;
-  warn: (input: string) => unknown;
-  error: (input: string) => unknown;
-  dir: (input: string) => unknown;
-}
-
-/**
- * @description `JA` 오브젝트에 담길 코드
- * 단, `logger`는 global 스코프에도 저장됩니다.
- */
-export interface RunnerControls {
-  setGame: (id: string) => unknown;
-}
-
-/**
- * @description 실행 가능한 외부 코드
- */
-export interface ForeignCode {
-  init: () => unknown;
-  loop: () => unknown;
-  setup: () => unknown;
-}
+import { UserCode, LogFunc, Logger, RunnerControls } from './types';
 
 /**
  * @description 외부 코드를 실행 가능하도록 하는 환경을 생성합니다.
  * @param input 실행할 외부 코드
  * @param injectKey
  */
-function makeFunc(input: string): ForeignCode {
+function makeFunc(input: string): UserCode {
   // eslint-disable-next-line
   return new Function(`
     return (function() {
@@ -58,19 +33,6 @@ function makeFunc(input: string): ForeignCode {
       };
     })();
   `)();
-}
-
-/**
- *
- * @param code 실행할 외부 코드
- * @param injectKey `JA` 오브젝트에 대한 키
- */
-function build(code: string): ForeignCode {
-  try {
-    return makeFunc(code);
-  } catch (err) {
-    throw err;
-  }
 }
 
 /**
@@ -103,7 +65,12 @@ export default class Executor {
   public setCode(code: string) {
     this.code = code;
   }
-  public getExec(): ForeignCode {
-    return build(this.code);
+  /**
+   * @description code를 실행가능하도록 compile합니다.
+   * @param code 실행할 외부 코드
+   * @param injectKey `JA` 오브젝트에 대한 키
+  */
+  public getExec(): UserCode {
+    return makeFunc(this.code);
   }
 }
