@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import {MdRefresh, MdPlayArrow} from 'react-icons/md';
 import { useRouter } from 'next/router';
-import useEngine from '../../JamiShip/useEngine';
-import { ForeignCode } from '../../JamiShip/Execute';
-import Logger, { LogItem } from '../../components/Logger';
+import { useEngine, useLogger } from '../../JamiShip';
+import { UserCode, LogItem } from '../../JamiShip/types';
+import Logger from '../../components/Logger';
 import TopBar from '../../components/TopBar';
 import { GameDisplay, EmptyGame } from '../../JamiShip/gameList';
 
@@ -13,14 +13,7 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
 
-const dirPrint = (value: Object) => {
-  let ans = '[Game Object]';
-  for (const [key, val] of Object.entries(value)) {
-    ans = ans.concat('\n', `${key}: ${val.toString()}`);
-  }
-  console.log(ans);
-  return ans;
-};
+
 export default function NamePage() {
   const router = useRouter();
   const key = router.query.name;
@@ -28,24 +21,10 @@ export default function NamePage() {
   const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
   // eslint-disable-next-line
   const [code, setCode] = useState(currentGame.stub);
-  const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
-  const [log, setLog] = useState(0);
+  const [codeObj, setCodeObj] = useState<UserCode | null>(null);
   const [logData, setLogData] = useState<LogItem[]>([]);
+  const logger = useLogger(logData, setLogData);
   const { start, compile } = useEngine();
-
-  // eslint-disable-next-line
-  const logger = ((level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
-    const data = logData;
-    const cnt = data.push({
-      level,
-      value: level === 'dir' ? dirPrint(value) : value.toString(),
-    });
-    if (level === 'error') {
-      console.error(value);
-    }
-    setLog(cnt);
-    setLogData(data);
-  });
 
   const startHandler = () => {
     if (codeObj === null) {
@@ -66,7 +45,7 @@ export default function NamePage() {
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
-          <Logger count={log} logData={logData} />
+          <Logger logData={logData} />
         </div>
         <div className="controls">
           <div className="control-item" onClick={compileHandler}>
