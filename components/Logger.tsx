@@ -2,22 +2,39 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { LogItem } from '../JamiShip/types';
 
-interface LoggerProps {
-  logData: any;
+function useForceUpdate() {
+  const [, setTick] = React.useState(0);
+  const update = React.useCallback(() => {
+    setTick(tick => tick + 1);
+  }, [])
+  return update;
 }
 
-const Logger = ({logData}: LoggerProps) => {
+interface LoggerProps {
+  logData: any;
+  callee: any;
+}
+
+const Logger = ({ logData, callee }: LoggerProps) => {
+  const forceUpdate = useForceUpdate();
+
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
   const mapLogItem = (v: LogItem, i: number) => (
     <div className={v.level} key={i}>{v.value}</div>
   );
+
   useEffect(() => {
     endRef.current!.scrollIntoView();
   });
+  useEffect(() => {
+    console.log(logData);
+    forceUpdate();
+  }, [logData]);
   return (
     <Container>
       {logData.map(mapLogItem)}
       <div ref={endRef} />
+      <div style={{display: "none"}}>{callee}</div>
     </Container>
   );
 };
