@@ -1,6 +1,7 @@
 import Executor from './core';
 import { LogFunc, UserCode } from './types';
 import Game, { CircleGame } from './games/circleGame';
+import {RaindropGame} from '../JamiShip/games/raindrop';
 
 let exec: Executor;
 let game: Game<any>;
@@ -9,7 +10,11 @@ export default function useEngine() {
   const setGame = (id: string) => {
     console.log(id);
     // TODO: parse id string
-    game = new CircleGame();
+    if (id === 'raindrop') {
+      game = new RaindropGame();
+    } else {
+      game = new CircleGame();
+    }
     exec.inject(game.controllers);
   };
 
