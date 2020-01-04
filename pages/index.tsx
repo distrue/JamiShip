@@ -23,7 +23,7 @@ export default () => {
   const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
   const [log, setLog] = useState(0);
   const [logData, setLogData] = useState<LogItem[]>([]);
-  const { start, compile } = useEngine();
+  const { loadComponents, start, compile } = useEngine();
 
   // eslint-disable-next-line
   const logger = ((level: 'log' | 'warn' | 'error', value: string) => {
@@ -32,40 +32,33 @@ export default () => {
     setLog(cnt);
     setLogData(data);
   });
-  const [canvases] = React.useState(['canvas1', 'canvas2']);
+  const [canvases, setCanvases] = React.useState<BaseObj[]>([]);
 
   React.useEffect(() => {
-    const testBase = new BaseObj('canvas1', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 });
-    const testBase2 = new BaseObj('canvas2', ['https://cdn.auth0.com/blog/react-js/react.png'], false, { x: 100, y: 100 }, { x: 100, y: 100 });
-    testBase.moveToWithCheckBump([testBase2], 550, 200, 1000).then(() => testBase2.moveToWithCheckBump([testBase], 700, 120, 2000))
-      .then(() => testBase.moveToWithCheckBump([testBase2], 400, 170, 1500)).then(() => testBase2.moveToWithCheckBump([testBase], 300, 200, 200));
-
-    testBase2.moveToWithCheckBump([testBase], 450, 250, 1000).then(() => testBase.moveToWithCheckBump([testBase2], 200, 10, 2000))
-      .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200));
+    const items = loadComponents(['canvas1', 'canvas2']);
+    setCanvases(items);
     // eslint-disable-next-line
   }, []);
 
   const startHandler = () => {
     if (codeObj === null) {
-      alert('Code not loaded!')
+      alert('Code not loaded!');
     } else {
-      start(logger, codeObj);
+      start(canvases, logger, codeObj);
     }
-  }
+  };
   const compileHandler = () => {
     compile(setCodeObj, logger, code);
-  }
+  };
 
   return (
     <>
       <Background>
-        {canvases.map((name) => {
-          return (
-            <canvas key={name} className="canvas" id={name} width="1000px" height="300px">
+        {['canvas1', 'canvas2'].map((canvas) => (
+          <canvas key={canvas} className="canvas" id={canvas} width="1000px" height="300px">
               canvas
-            </canvas>
-          );
-        })}
+          </canvas>
+        ))}
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />
