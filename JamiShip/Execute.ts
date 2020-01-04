@@ -12,7 +12,7 @@ export interface Logger {
  * 단, `logger`는 global 스코프에도 저장됩니다.
  */
 export interface RunnerControls {
-  
+
 }
 
 /**
@@ -26,7 +26,7 @@ export interface ForeignCode {
 /**
  * @description 외부 코드를 실행 가능하도록 하는 환경을 생성합니다.
  * @param input 실행할 외부 코드
- * @param injectKey 
+ * @param injectKey
  */
 function makeFunc(input: string): ForeignCode {
   return new Function(`
@@ -50,9 +50,9 @@ function makeFunc(input: string): ForeignCode {
 }
 
 /**
- * 
+ *
  * @param code 실행할 외부 코드
- * @param injectKey `JA` 오브젝트에 대한 키 
+ * @param injectKey `JA` 오브젝트에 대한 키
  */
 function build(code: string): ForeignCode {
   try {
@@ -81,7 +81,7 @@ export default class Executor {
     this.logger = {
       error: (v) => logger('error', v),
       log: (v) => logger('log', v),
-      warn: (v) => logger('warn', v)
+      warn: (v) => logger('warn', v),
     };
     injectCode(this.logger, controls);
   }

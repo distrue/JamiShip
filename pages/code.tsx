@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import CodeEditor from '../components/CodeEditor';
 import Executor, { ForeignCode } from '../JamiShip/Execute';
-import Logger, {LogItem} from '../components/Logger';
+import Logger, { LogItem } from '../components/Logger';
 
 const defaultCode = `const a = 123;
 const b = 234;
@@ -25,10 +25,10 @@ const CodePage = (): JSX.Element => {
 
   const logger = (level: 'log' | 'warn' | 'error', value: string) => {
     const data = logData;
-    const cnt = data.push({level, value: value.toString()});
+    const cnt = data.push({ level, value: value.toString() });
     setLog(cnt);
     setLogData(data);
-  }
+  };
 
   const loadHandler = () => {
     try {
@@ -68,13 +68,16 @@ const CodePage = (): JSX.Element => {
 
   return (
     <Container>
-      <CodeEditor onChange={setCodeValue} value={codeValue}
+      <CodeEditor
+        onChange={setCodeValue}
+        value={codeValue}
         style={{
-          gridRow: "1 / 3",
-          gridColumn: "1 / 2",
-          width: "100%",
-          height: "100%"
-        }}/>
+          gridRow: '1 / 3',
+          gridColumn: '1 / 2',
+          width: '100%',
+          height: '100%',
+        }}
+      />
       <div className="controls">
         <button onClick={loadHandler}>Reload</button>
         <button onClick={initHandler}>Init()</button>
