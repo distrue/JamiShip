@@ -33,7 +33,7 @@ const Container = styled.div`
     color: #FF0000;
   }
   & {
-    background-color: #222;
+    background-color: #111;
     width: 100%;
     height: 100%;
     padding: 8px;
