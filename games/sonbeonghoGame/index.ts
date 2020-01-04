@@ -1,9 +1,5 @@
 import { BaseObj } from './component';
-
-export default interface Game<T> {
-  controllers: T;
-  frame: (frameNo: number) => Promise<boolean>;
-};
+import { Game } from '../../JamiShip/types';
 
 type filters = 'hairColor' | 'onGlasses' | 'height';
 
@@ -86,8 +82,8 @@ export class SBHGame implements Game<SBHGameApi> {
         .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200)),
     ];
     await Promise.all(pms); */
-    if(frameNo < 3) return true;
-    return false;
+    if(frameNo < 3) return undefined;
+    return true;
   }
 
   constructor() {
