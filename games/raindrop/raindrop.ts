@@ -1,4 +1,4 @@
-import { BaseObj } from '../circleGame/circle';
+import { BaseObj } from './base';
 
 export default class RaindropObj extends BaseObj {
   private speed: number;

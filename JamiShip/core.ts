@@ -46,6 +46,9 @@ function injectCode(logger: Logger, controls: RunnerControls) {
   (window as any).interfaceJA = controls;
 }
 
+/**
+ * @description `Executor`는 외부 코드를 실행하면서 상태를 유지하기 위한 클래스입니다.
+ */
 export default class Executor {
   private code: string;
   private logger: Logger;

@@ -5,6 +5,7 @@ export interface GameEntry {
   id: string;
   stub: string;
   tutorial: string[];
+  rating?: number;
 }
 
 const playground = {
@@ -42,6 +43,7 @@ function loop(frameNo) {
   Game.bh(frameNo, 'hairColor', 'green');
 }`,
   tutorial: [],
+  rating: 2
 };
 
 const raindrop = {
@@ -54,19 +56,47 @@ const raindrop = {
 }
 
 function init() {
-
+  Game.addRaindrop(500, 10);
+  Game.addRaindrop(200, 5);
+  Game.addRaindrop(400, 5);
+  Game.addTraveler();
+  Game.randomTravelerMove();
+  for (let i = 0 ; i < 10; i +=1) {
+    Game.addRaindrop(Math.random()*1000, Math.random()*10);
+  }
 }
 
 function loop() {
 
 }`,
   tutorial: [],
+  rating: 4
+};
+
+const shoot = {
+  title: '대포쏘기',
+  image: 'http://fetch.rigvedawiki.net/f/_cache/fetchfile/a/a9/a9e86ebf886bacc54d434559c3080394.w480.jpeg',
+  id: 'shoot',
+  desc: '대포로 과녁을 맞추세요',
+  stub: `function setup() {
+  setGame("shoot");
+  logger.dir(Game);
+}
+function init() {
+  logger.log(Game.getTarget());
+}
+function loop() {
+  //Game.setVelocity(10, 10);
+}`,
+tutorial: [],
+rating: 2
 };
 
 export const GameDisplay: GameEntry[] = [
   playground,
   sonbeonghoGame,
   raindrop,
+  shoot
 ];
 
 export const EmptyGame = playground;

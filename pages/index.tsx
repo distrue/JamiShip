@@ -2,17 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { GameDisplay as items } from '../JamiShip/gameList';
+import { GameDisplay as items } from '../games/gameList';
+import { MdStar } from 'react-icons/md';
 
 interface GameItemProps {
   image: string;
   title: string;
   detail: string;
   link: string;
+  rating?: number;
 }
 
 const GameItem = (props: GameItemProps) => {
-  const {link, image, title, detail} = props;
+  const {link, image, title, detail, rating} = props;
+  const stars = [];
+  for(let i=0; i<(rating ?? 3);i++) {
+    stars.push(<MdStar key={i} />);
+  }
   return (
     <ItemContainer>
       <Link href={link}>
@@ -21,7 +27,8 @@ const GameItem = (props: GameItemProps) => {
             <img src={image} alt={title} />
           </div>
           <h2>{title}</h2>
-          <span>{detail}</span>
+          <div>{detail}</div>
+          <div className="stars">{stars}</div>
         </div>
       </Link>
     </ItemContainer>
@@ -41,7 +48,7 @@ const Main = () => (
     <Container>
       <h1>학습 시작하기</h1>
       <div className="items">
-        {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={`/learn/${v.id}`} detail={v.desc} />)}
+        {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={`/learn/${v.id}`} detail={v.desc} rating={v.rating} />)}
       </div>
     </Container>
   </Layout>
@@ -66,7 +73,7 @@ const ItemContainer = styled.div`
   & {
     user-select: none;
     width: 360px;
-    height: 300px;
+    height: 340px;
     padding: 16px;
     box-sizing: border-box;
     margin: 16px;
@@ -89,6 +96,9 @@ const ItemContainer = styled.div`
   }
   h2 {
     margin: 12px 0 8px 0;
+  }
+  .stars {
+    margin-top: 8px;
   }
 `;
 
