@@ -18,19 +18,19 @@ const App: React.FC = () => {
  */
 function loadImage(urls: string[], idx: number): Promise<any[]> {
   if (idx === -1) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve([]);
     });
   }
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => loadImage(urls, idx-1).then(imgs => resolve([...imgs, img])) ;
+    img.onload = () => loadImage(urls, idx - 1).then((imgs) => resolve([...imgs, img]));
     img.onerror = () => reject(new Error(`load ${urls[idx]} fail`));
     img.src = urls[idx];
-  }); 
+  });
 }
 
-export type Rectangular = {x1: number, x2: number, y1: number, y2: number};
+export type Rectangular = { x1: number; x2: number; y1: number; y2: number };
 /**
  * @description 두 직사각형이 겹치는지 안겹치는지 판단하는 함수
  * @param rectA {x1: number, x2: number, y1: number, y2: number};
@@ -38,17 +38,17 @@ export type Rectangular = {x1: number, x2: number, y1: number, y2: number};
  * @returns 겹칠경우 true, 안겹칠경우 false, 딱 맞닿을 경우 false
  */
 export function checkRectOverlap(rectA: Rectangular, rectB: Rectangular) {
-  const centerA = {x: (rectA.x1 + rectA.x2)/2, y: (rectA.y1 + rectA.y2)/2};
-  const centerB = {x: (rectB.x1 + rectB.x2)/2, y: (rectB.y1 + rectB.y2)/2};
-  const absGradient = Math.abs((centerB.y - centerA.y)/(centerB.x - centerA.x));
-  const lengthBetweenAB = Math.abs((centerB.x-centerA.x) * absGradient);
+  const centerA = { x: (rectA.x1 + rectA.x2) / 2, y: (rectA.y1 + rectA.y2) / 2 };
+  const centerB = { x: (rectB.x1 + rectB.x2) / 2, y: (rectB.y1 + rectB.y2) / 2 };
+  const absGradient = Math.abs((centerB.y - centerA.y) / (centerB.x - centerA.x));
+  const lengthBetweenAB = Math.abs((centerB.x - centerA.x) * absGradient);
   const lengthSideA = Math.abs((rectA.x1 - centerA.x) * absGradient);
   const lengthSideB = Math.abs((rectB.x1 - centerB.x) * absGradient);
-  if (lengthBetweenAB >= lengthSideA + lengthSideB) { // 안만남
+  if (lengthBetweenAB >= lengthSideA + lengthSideB) {
+    // 안만남
     return false;
-  } else { // 겹침
-    return true;
   }
+  return true; // 겹침
 }
 export function canvas2dClear(canvas: HTMLCanvasElement) {
   const ctx = canvas.getContext('2d');
@@ -58,9 +58,9 @@ export class BaseObj {
   private canvas: HTMLCanvasElement;
   private srcs: string[]; // 이미지 src 리스트
   private ctx: CanvasRenderingContext2D;
-  private size: {x: number, y: number}; // 사이즈 아마 픽셀단위
-  private location: {x: number, y: number}; // 이미지 위치 왼쪽 위가 0,0
-  private overlapable : boolean; // 겹쳐질 수 있는지 true이면 겹쳐질 수 있음.
+  private size: { x: number; y: number }; // 사이즈 아마 픽셀단위
+  private location: { x: number; y: number }; // 이미지 위치 왼쪽 위가 0,0
+  private overlapable: boolean; // 겹쳐질 수 있는지 true이면 겹쳐질 수 있음.
   private innerRect: Rectangular;
 
   /**
@@ -70,7 +70,7 @@ export class BaseObj {
    * @param size 이미지의 사이즈
    * @param location 이미지 위치 왼쪽 위가 0,0
    */
-  constructor(canvasId: string, srcs: string[], overlapable: boolean, size: {x: number, y: number}, location = {x: 0, y: 0}) {
+  constructor(canvasId: string, srcs: string[], overlapable: boolean, size: { x: number; y: number }, location = { x: 0, y: 0 }) {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     this.ctx = this.canvas.getContext('2d')!;
     this.srcs = srcs;
@@ -78,19 +78,19 @@ export class BaseObj {
     this.size = size;
     this.draw();
     this.overlapable = overlapable;
-    const margin = {x: size.x/10, y: size.y/10};
+    const margin = { x: size.x / 10, y: size.y / 10 };
     this.innerRect = {
       x1: location.x + margin.x,
       x2: location.x + size.x - margin.x,
       y1: location.y + margin.y,
-      y2: location.y + size.y - margin.y
-    }
+      y2: location.y + size.y - margin.y,
+    };
   }
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
   }
   setLocation(x: number, y: number) {
-    this.location = {x, y};
+    this.location = { x, y };
   }
   getLocation() {
     return this.location;
@@ -103,19 +103,22 @@ export class BaseObj {
   }
   getImages() {
     const ret = [];
-    for (let i = 0 ; i < this.srcs.length; i++) {
+    for (let i = 0; i < this.srcs.length; i += 1) {
       ret.push({
         src: this.srcs[i],
       });
     }
-    return ret; 
+    return ret;
   }
   draw() {
     const getImgs = this.getImages();
-    loadImage(getImgs.map((infos => infos.src)), this.getImages().length - 1).then(imgs => {
-      for (let i = 0 ; i < getImgs.length ; i++) {
+    loadImage(
+      getImgs.map((infos) => infos.src),
+      this.getImages().length - 1,
+    ).then((imgs) => {
+      for (let i = 0; i < getImgs.length; i += 1) {
         this.ctx.drawImage(imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
-      }      
-    })
+      }
+    });
   }
 }

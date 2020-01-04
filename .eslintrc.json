@@ -22,7 +22,8 @@
     ],
     "dot-notation": ["warn", { "allowPattern": "^[a-z]+(_[a-z]+)+$" }],
     "no-param-reassign": ["error", { "props": false }],
-    "import/extensions": ["warn", "never"]
+    "import/extensions": ["warn", "never"],
+    "lines-between-class-members": "off"
   },
   "parserOptions": {
     "project": "tsconfig.json"
