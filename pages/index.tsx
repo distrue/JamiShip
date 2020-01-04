@@ -1,6 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import engine from '../runtimeEngine';
+
+export default () => {
+  React.useEffect(() => {
+    engine();
+  }, []);
+
+  return <div>Hello</div>;
+};
+
 export default () => {
   return (
     <Background>
