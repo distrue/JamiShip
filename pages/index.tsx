@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-
+import dynamic from 'next/dynamic';
 import engine from '../JamiShip/engine';
 import { BaseObj, checkRectOverlap } from '../JamiShip/component';
 
+const CodeEditor = dynamic(import('../components/CodeEditor'), {
+  ssr: false
+});
+
 export default () => {
+  const [code, setCode] = useState('');
   React.useEffect(() => {
     engine();
     const testBase = new BaseObj('map-canvas', ['https://cdn.auth0.com/blog/react-js/react.png'], true, { x: 100, y: 100 });
@@ -19,7 +24,7 @@ export default () => {
         canvas
       </canvas>
       <Background>
-        <div className="cli" />
+        <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
             state
         </div>
@@ -33,21 +38,20 @@ const Background = styled.div`
   height: 100vh;
   position: absolute;
   top: 0; left: 0;
+  grid-template-rows: 60% 40%;
+  grid-template-columns: 60% 40%;
+  display: grid;
   .cli {
-    position: absolute;
-    top: 0px;
-    left: 65vw;
-    width: 35vw;
-    height: 70vh;
+    grid-row: 1 / 3;
+    grid-column: 2 / 3;
     border: 1px solid black;
-    background-color: #212121;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
   }
   .state {
-    position: absolute;
-    top: 70vh;
-    left: 0px;
-    width: 100vw;
-    height: 20vh;
+    grid-row: 2 / 3;
+    grid-column: 1 / 3;
     border: 1px solid black;
   }
 `;
