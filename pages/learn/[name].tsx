@@ -7,7 +7,7 @@ import useEngine from '../../JamiShip/useEngine';
 import { ForeignCode } from '../../JamiShip/Execute';
 import Logger, { LogItem } from '../../components/Logger';
 import TopBar from '../../components/TopBar';
-import { GameDisplay, EmptyGame } from '../../JamiShip/gameDisplay';
+import { GameDisplay, EmptyGame } from '../../JamiShip/gameList';
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
