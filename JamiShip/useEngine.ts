@@ -6,8 +6,6 @@ let game: Game<any>;
 
 export default function useEngine(GAMES: any) {
   const setGame = (id: string) => {
-
-    console.log(GAMES);
     if (!Object.keys(GAMES).includes(id)) {
       throw new Error('Game not found');
     }
@@ -24,24 +22,26 @@ export default function useEngine(GAMES: any) {
     }
   };
 
-  const runLoop = async (logger: LogFunc, codeObj: UserCode) => {
+  const runLoop = async (logger: LogFunc, codeObj: UserCode): Promise<boolean> => {
     let frameNo = 1;
     try {
-      while (frameNo < 10) {
+      while (frameNo <= 10) {
         codeObj.loop(frameNo);
         logger('system', `${frameNo}프레임 실행`);
         const result = await game.frame(frameNo);
         if (result !== undefined) {
           logger('system', '게임의 결과:');
           logger('log', result);
-          break;
+          return false;
         }
         frameNo += 1;
       }
+      return true;
     } catch (err) {
       logger('error', `Error running frame ${frameNo}`);
       logger('error', err);
     }
+    return false;
   };
 
   const start = async (logger: LogFunc, codeObj: UserCode) => {
@@ -52,8 +52,11 @@ export default function useEngine(GAMES: any) {
       logger('error', 'Error during init');
       logger('error', err);
     }
-    await runLoop(logger, codeObj);
+    const noOutput = await runLoop(logger, codeObj);
     logger('system', '프로그램 종료');
+    if (noOutput) {
+      logger('warn', '승리!');
+    }
   };
 
   const compile = (setCodeObj: (obj: UserCode) => unknown, logger: LogFunc, code: string) => {
