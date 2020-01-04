@@ -29,6 +29,7 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
 export default function NamePage() {
   const router = useRouter();
   // eslint-disable-next-line
+  const [executed, setExecuted] = useState(false);
   const [code, setCode] = useState("");
   const [codeObj, setCodeObj] = useState<UserCode | null>(null);
   const [help, setHelp] = useState<string[]>([]);
@@ -41,20 +42,24 @@ export default function NamePage() {
     const key = router.query.name;
     const filtered = GameDisplay.filter((x) => (x.id === key));
     const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
-    console.log(filtered);
     setCode(currentGame.stub);
     setHelp(currentGame.tutorial);
   }, [router.query.name]);
   const startHandler = () => {
+    if (executed) {
+      compileHandler();
+    }
     if (codeObj === null) {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
       start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
+      setExecuted(true);
     }
   };
   const compileHandler = () => {
     compile(setCodeObj, logger, code);
+    setExecuted(false);
   };
 
   return (
@@ -98,6 +103,7 @@ const Background = styled.div`
     width: 100%;
     height: 100%;
     background-color: #FFF;
+    z-index: -1;
   }
   .cli {
     grid-row: 1 / 4;
@@ -106,6 +112,7 @@ const Background = styled.div`
     height: 100%;
     width: 100%;
     box-sizing: border-box;
+    z-index: 1;
   }
   .controls {
     grid-row: 2 / 3;
@@ -115,6 +122,7 @@ const Background = styled.div`
     flex-direction: row;
     align-items: center;
     padding-left: 8px;
+    z-index: 1;
   }
   .control-item {
     z-index: 100000;
@@ -132,8 +140,9 @@ const Background = styled.div`
     }
   }
   .state {
+    z-index: 1;
     grid-row: 3 / 4;
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
   }
   .t1 {
     position: absolute;

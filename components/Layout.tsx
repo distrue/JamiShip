@@ -19,6 +19,9 @@ const Container = styled.div`
   & {
     margin-top: 60px;
   }
+  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-jp.css);  
+  * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif'; }
 `;
 
 export default Layout;
