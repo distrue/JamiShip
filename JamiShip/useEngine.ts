@@ -1,22 +1,13 @@
 import Executor from './core';
 import { LogFunc, UserCode, Game } from './types';
-import { CircleGame } from '../games/circleGame';
-import {SBHGame} from '../games/sonbeonghoGame';
-import {RaindropGame} from '../games/raindrop';
-import ShootGame from '../games/shoot';
 
-const GAMES = {
-  circle: CircleGame,
-  sonbeong: SBHGame,
-  raindrop: RaindropGame,
-  shoot: ShootGame
-};
 
 let exec: Executor;
 let game: Game<any>;
 
-export default function useEngine() {
+export default function useEngine(GAMES: any) {
   const setGame = (id: string) => {
+    console.log(GAMES);
     if (!Object.keys(GAMES).includes(id)) {
       throw new Error('Game not found');
     }

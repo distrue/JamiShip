@@ -9,6 +9,18 @@ import Logger from '../../components/Logger';
 import TopBar from '../../components/TopBar';
 import { GameDisplay, EmptyGame } from '../../games/gameList';
 
+import { CircleGame } from '../../games/circleGame';
+import { SBHGame } from '../../games/sonbeonghoGame';
+import { RaindropGame } from '../../games/raindrop';
+import ShootGame from '../../games/shoot';
+
+const GAMES = {
+  circle: CircleGame,
+  sonbeong: SBHGame,
+  raindrop: RaindropGame,
+  shoot: ShootGame,
+};
+
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
@@ -23,7 +35,7 @@ export default function NamePage() {
   const [logData, setLogData] = useState<LogItem[]>([]);
   const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
-  const { start, compile } = useEngine();
+  const { start, compile } = useEngine(GAMES);
 
   React.useEffect(() => {
     const key = router.query.name;
