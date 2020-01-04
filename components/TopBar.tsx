@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MdHome } from 'react-icons/md';
 import { useRouter } from 'next/router';
+import HintModal from './HintModal';
 
-const TopBar = () => {
+interface TopBarProps {
+  help?: string[];
+}
+
+const TopBar = (props: TopBarProps) => {
+  const [helpVisible, setHelpVisible] = useState(props.help !== undefined && props.help.length > 0);
+  const [helpIndex, setHelpIndex] = useState(0);
   const router = useRouter();
   const exitHandler = () => {
     console.log(router.pathname);
@@ -15,13 +22,29 @@ const TopBar = () => {
     }
     router.push('/');
   };
+  let helpBtn;
+  if (props.help !== undefined && props.help.length > 0) {
+    helpBtn = (
+      <span className="helpBtn" onClick={() => setHelpVisible(true)}>도움말 보기</span>
+    );
+  }
   return (
-    <TopBarContainer>
-      <>
-        <div className="home" onClick={exitHandler}><MdHome /></div>
-        <span>JamiShip</span>
-      </>
-    </TopBarContainer>
+    <>
+      <TopBarContainer>
+        <>
+          <div className="home" onClick={exitHandler}><MdHome /></div>
+          <span>JamiShip</span>
+          {helpBtn}
+        </>
+      </TopBarContainer>
+      <HintModal
+        text={props.help!}
+        visible={helpVisible}
+        onClose={() => setHelpVisible(false)}
+        index={helpIndex}
+        setIndex={setHelpIndex}
+      />
+    </>
   );
 };
 
@@ -53,6 +76,11 @@ const TopBarContainer = styled.div`
       fill: #FFF;
       cursor: pointer;
     }
+  }
+  .helpBtn {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 16px;
   }
 `;
 

@@ -21,7 +21,7 @@ function init() {
 function loop() {
 
 }`,
-  tutorial: [],
+  tutorial: ["플레이그라운드입니다. 원하는 대로 코드를 작성해보세요!"],
 };
 
 const sonbeonghoGame = {
@@ -45,9 +45,29 @@ function loop(frameNo) {
   tutorial: [],
 };
 
+const raindrop = {
+  title: '비내리기',
+  image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg',
+  id: 'raindrop',
+  desc: '비를 내려 고양이를 목욕시키세요',
+  stub: `function setup() {
+  setGame("raindrop");
+}
+
+function init() {
+
+}
+
+function loop() {
+
+}`,
+  tutorial: [],
+};
+
 export const GameDisplay: GameEntry[] = [
   playground,
   sonbeonghoGame,
+  raindrop,
 ];
 
 export const EmptyGame = playground;

@@ -1,3 +1,5 @@
+import { LogLevel } from "./useLogger";
+
 /**
  * @description 실행 가능한 외부 코드
  */
@@ -7,7 +9,6 @@ export interface UserCode {
   setup: () => unknown;
 }
 
-type LogLevel = 'log' | 'warn' | 'error' | 'dir';
 export type LogFunc = (level: LogLevel, value: any) => unknown;
 export interface LogItem {
   level: LogLevel;

@@ -19,6 +19,7 @@ export default function NamePage() {
   // eslint-disable-next-line
   const [code, setCode] = useState("");
   const [codeObj, setCodeObj] = useState<UserCode | null>(null);
+  const [help, setHelp] = useState<string[]>([]);
   const [logData, setLogData] = useState<LogItem[]>([]);
   const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
@@ -30,13 +31,14 @@ export default function NamePage() {
     const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
     console.log(filtered);
     setCode(currentGame.stub);
+    setHelp(currentGame.tutorial);
   }, [router.query.name]);
   const startHandler = () => {
     if (codeObj === null) {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj).then(() => setCallee(!callee));
+      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
     }
   };
   const compileHandler = () => {
@@ -45,7 +47,7 @@ export default function NamePage() {
 
   return (
     <>
-      <TopBar />
+      <TopBar help={help} />
       <Background>
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
