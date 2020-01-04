@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 export interface LogItem {
-  level: 'log' | 'warn' | 'error';
+  level: 'dir' | 'log' | 'warn' | 'error';
   value: string;
 }
 
@@ -28,7 +28,7 @@ const Logger = (props: LoggerProps) => {
 };
 
 const Container = styled.div`
-  .log {
+  .log, .dir {
     color: #FFF;
   }
   .warn {

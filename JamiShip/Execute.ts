@@ -1,10 +1,11 @@
-export type LogLevel = 'log' | 'warn' | 'error';
+export type LogLevel = 'log' | 'warn' | 'error' | 'dir';
 export type LogFunc = (level: LogLevel, input: any) => unknown;
 
 export interface Logger {
   log: (input: string) => unknown;
   warn: (input: string) => unknown;
   error: (input: string) => unknown;
+  dir: (input: string) => unknown;
 }
 
 /**
@@ -12,7 +13,7 @@ export interface Logger {
  * 단, `logger`는 global 스코프에도 저장됩니다.
  */
 export interface RunnerControls {
-
+  setGame: (id: string) => unknown;
 }
 
 /**
@@ -32,7 +33,12 @@ export interface ForeignCode {
 function makeFunc(input: string): ForeignCode {
   return new Function(`
     return (function() {
-      const JA = window.interfaceJA;
+      let Game = window.interfaceJA;
+      const setGame = (key) => {
+        if(!Game.setGame) return;
+        Game.setGame(key);
+        Game = window.interfaceJA;
+      };
       ${input}
       const initDefault = () => {
         throw new Error('Exec error: Init undefined');
@@ -86,6 +92,7 @@ export default class Executor {
       error: (v) => logger('error', v),
       log: (v) => logger('log', v),
       warn: (v) => logger('warn', v),
+      dir: (v) => logger('dir', v)
     };
     injectCode(this.logger, controls);
   }
