@@ -4,14 +4,14 @@ import Table from '../../components/bfs/table';
 import Queue from '../../components/bfs/queue';
 
 const Index = () => {
-  const [tableColor, setTableColor] = React.useState<boolean[]>([]);
-  const [tableNum, setTableNum] = React.useState<number[]>([]);
+  const [tableColor, setTableColor] = React.useState<boolean[][]>([[]]);
+  const [tableNum, setTableNum] = React.useState<number[][]>([[]]);
   const [queueNum, setQueueNum] = React.useState<number[]>([]);
 
   React.useState(() => {
-    setTableColor([false, false, true, false, false, false, false, false, false]);
-    setTableNum([0, 1, 2, 3, 4, 5, 6, 7]);
-    setQueueNum([0, 1, 2, 3]);
+    setTableColor([[false, true, true], [false, true, false], [false, false, false]]);
+    setTableNum([[-1, -1, 1], [-1, -1, -1], [-1, -1, -1]]);
+    setQueueNum([]);
   });
 
   return (
