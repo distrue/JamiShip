@@ -64,10 +64,29 @@ function loop() {
   tutorial: [],
 };
 
+const shoot = {
+  title: '대포쏘기',
+  image: 'http://fetch.rigvedawiki.net/f/_cache/fetchfile/a/a9/a9e86ebf886bacc54d434559c3080394.w480.jpeg',
+  id: 'shoot',
+  desc: '대포로 과녁을 맞추세요',
+  stub: `function setup() {
+  setGame("shoot");
+  logger.dir(Game);
+}
+function init() {
+  logger.log(Game.getTarget());
+}
+function loop() {
+
+}`,
+tutorial: []
+};
+
 export const GameDisplay: GameEntry[] = [
   playground,
   sonbeonghoGame,
   raindrop,
+  shoot
 ];
 
 export const EmptyGame = playground;

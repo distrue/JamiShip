@@ -8,12 +8,15 @@ interface Position {
 }
 
 interface ShootGameApi {
+  desc_getMaxVelocity: string;
   getMaxVelocity: () => number;
+  desc_setVelocity: string;
   setVelocity: (vx: number, vy: number) => unknown;
+  desc_getTarget: string;
   getTarget: () => Position;
 }
 
-const MAX_V = 10;
+const MAX_V = 100;
 const TARGET_W = 20;
 const TARGET_H = 50;
 const TARGET_X = 750;
@@ -36,18 +39,21 @@ export default class ShootGame implements Game<ShootGameApi> {
   private targetEl: HTMLCanvasElement;
   private ballEl: HTMLCanvasElement;
   public controllers = {
+    desc_getMaxVelocity: "설정 가능한 최대 속력을 가져옵니다. (number를 반환)",
     getMaxVelocity: () => MAX_V,
-    getTarget: () => (
-      {
+    desc_getTarget: "과녁의 위치를 가져옵니다. ({x, y, w, h}를 반환)",
+    getTarget: () => {
+      return {
         x: TARGET_X,
         y: this.targetY,
         w: TARGET_W,
         h: TARGET_H
       }
-    ),
+    },
+    desc_setVelocity: "포탄의 속도를 설정합니다. setVelocity(x축 속력, y축 속력)",
     setVelocity: (vx: number, vy: number) => {
-      this.ballVX = Math.max(MAX_V, Math.max(vx, 0));
-      this.ballVY = -Math.max(MAX_V, Math.max(vy, 0));
+      this.ballVX = Math.min(MAX_V, Math.max(vx, 0));
+      this.ballVY = -Math.min(MAX_V, Math.max(vy, 0));
     }
   }
   private collides(): boolean {
