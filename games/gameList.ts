@@ -88,7 +88,11 @@ function loop() {
   const y = Game.getTarget().y;
   Game.setVelocity(10,  (500-y)/45);
 }`,
-tutorial: [],
+tutorial: [`게임의 룰은 간단합니다.<br>
+포탄은 왼쪽 아래에서 발사되고, 오른쪽에 있는 과녁을 맞추면 됩니다.<br>
+지금 작성되어 있는 코드는 높이 있는 과녁밖에 맞추지 못합니다.
+코드를 수정해서 전부 맞출 수 있도록 고쳐주세요!
+`],
 rating: 2
 };
 
