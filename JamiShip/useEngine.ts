@@ -1,12 +1,12 @@
 import Executor from './core';
 import { LogFunc, UserCode, Game } from './types';
 
-
 let exec: Executor;
 let game: Game<any>;
 
 export default function useEngine(GAMES: any) {
   const setGame = (id: string) => {
+
     console.log(GAMES);
     if (!Object.keys(GAMES).includes(id)) {
       throw new Error('Game not found');
