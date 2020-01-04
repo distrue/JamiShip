@@ -87,7 +87,7 @@ function init() {
   logger.log(Game.getTarget());
 }
 function loop() {
-
+  //Game.setVelocity(10, 10);
 }`,
 tutorial: [],
 rating: 2

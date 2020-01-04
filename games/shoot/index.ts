@@ -70,7 +70,7 @@ export default class ShootGame implements Game<ShootGameApi> {
     }
   }
   private frameCycle(): (string | undefined) {
-    if (this.ballX < -50 || this.ballX > 900 || this.ballY < -50 || this.ballY > 650) {
+    if (this.ballX < -50 || this.ballX > 1200 || this.ballY < -50 || this.ballY > 650) {
       return "실패..";
     }
     if (this.collides()) {
@@ -80,8 +80,8 @@ export default class ShootGame implements Game<ShootGameApi> {
     this.ballVX += 0;
     this.ballY += this.ballVY;
     this.ballX += this.ballVX;
-    this.ballEl.style.left = `${this.ballX}px`;
-    this.ballEl.style.top = `${this.ballY}px`;
+    this.ballEl.style.left = `${this.ballX - BALL_R}px`;
+    this.ballEl.style.top = `${this.ballY - BALL_R}px`;
     return;
   }
   public async frame() {
@@ -89,7 +89,7 @@ export default class ShootGame implements Game<ShootGameApi> {
     while(true) {
       ret = this.frameCycle();
       if (ret !== undefined) break;
-      await intervalPromise(20);
+      await intervalPromise(10);
     }
     return ret;
   }
@@ -109,14 +109,14 @@ export default class ShootGame implements Game<ShootGameApi> {
     ctx.fillStyle = 'red';
     ctx.fill();
     this.ballEl.style.position = 'absolute';
-    this.ballEl.style.left = `${this.ballX}px`;
-    this.ballEl.style.top = `${this.ballY}px`;
+    this.ballEl.style.left = `${this.ballX - BALL_R}px`;
+    this.ballEl.style.top = `${this.ballY - BALL_R}px`;
   }
   public constructor() {
-    this.ballX = 0;
+    this.ballX = BALL_R*2;
     this.ballY = 500;
     this.ballVX = 10;
-    this.ballVY = -5;
+    this.ballVY = 0;
     this.targetY = 50 + Math.floor(400*Math.random());
     this.targetEl = document.createElement('canvas');
     this.ballEl = document.createElement('canvas');
@@ -124,6 +124,5 @@ export default class ShootGame implements Game<ShootGameApi> {
     const root = document.getElementById('canvas-container');
     root?.appendChild(this.targetEl);
     root?.appendChild(this.ballEl);
-    console.log(this.ballVX, this.ballVY);
   }
 }
