@@ -39,6 +39,10 @@ const Logger = ({ logData, callee }: LoggerProps) => {
 };
 
 const Container = styled.div`
+  .system {
+    color: #FFF;
+    font-style: italic;
+  }
   .log, .dir {
     color: #FFF;
   }

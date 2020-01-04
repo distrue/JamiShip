@@ -34,7 +34,7 @@ export default function useEngine() {
     try {
       while (frameNo < 2) {
         codeObj.loop();
-        logger('log', `Run code(Frame ${frameNo})`);
+        logger('system', `${frameNo}프레임 실행`);
         const cont = game.frame(frameNo);
         if (!cont) {
           break;
@@ -49,12 +49,14 @@ export default function useEngine() {
 
   const start = async (logger: LogFunc, codeObj: UserCode) => {
     try {
+      logger('system', '프로그램을 시작합니다.');
       init(logger, codeObj);
     } catch (err) {
       logger('error', 'Error during init');
       logger('error', err);
     }
     await runLoop(logger, codeObj);
+    logger('system', '프로그램 종료');
   };
 
   const compile = (setCodeObj: (obj: UserCode) => unknown, logger: LogFunc, code: string) => {
@@ -67,7 +69,7 @@ export default function useEngine() {
       exec.setCode(code);
       const codeObj = exec.getExec();
       setCodeObj(codeObj);
-      logger('log', 'Compile code');
+      logger('system', '초기화되었습니다.');
       // setup은 컴파일 직후 실행 (ie. 페이지 로딩 후)
       codeObj.setup();
     } catch (err) {

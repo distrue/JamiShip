@@ -1,5 +1,7 @@
 import {LogItem} from './types';
 
+export type LogLevel = 'system' | 'dir' | 'log' | 'warn' | 'error';
+
 const dirPrint = (value: Object) => {
     let ans = '[Game Object]';
     for (const [key, val] of Object.entries(value)) {
@@ -11,7 +13,7 @@ const dirPrint = (value: Object) => {
 
 // eslint-disable-next-line
 const logger = (logData: LogItem[], setLogData: any) => {
-  return (level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
+  return (level: LogLevel, value: any) => {
     const log = logData;
     log.push({
         level,
