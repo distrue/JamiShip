@@ -15,6 +15,7 @@ import { RaindropGame } from '../../games/raindrop';
 import { FillBlockGame } from '../../games/fillblock';
 import ShootGame from '../../games/shoot';
 import FactoryGame from '../../games/factory';
+import { Puzzle8Game } from '../../games/puzzle8';
 
 const GAMES = {
   circle: CircleGame,
@@ -22,7 +23,8 @@ const GAMES = {
   raindrop: RaindropGame,
   shoot: ShootGame,
   fillBlock: FillBlockGame,
-  factory: FactoryGame
+  factory: FactoryGame,
+  puzzle8: Puzzle8Game
 };
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
