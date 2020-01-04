@@ -2,14 +2,19 @@ import Executor from './core';
 import { LogFunc, UserCode } from './types';
 import Game, { CircleGame } from './games/circleGame';
 
+const GAMES = {
+  circle: CircleGame
+};
+
 let exec: Executor;
 let game: Game<any>;
 
 export default function useEngine() {
   const setGame = (id: string) => {
-    console.log(id);
-    // TODO: parse id string
-    game = new CircleGame();
+    if (!Object.keys(GAMES).includes(id)) {
+      throw new Error('Game not found');
+    }
+    game = new (GAMES as any)[id]();
     exec.inject(game.controllers);
   };
 
