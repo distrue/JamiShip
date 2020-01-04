@@ -25,11 +25,11 @@ const GameItem = (props: GameItemProps) => (
 );
 
 const items: GameItemProps[] = [
-  {image: 'http://img2.sbs.co.kr/img/sbs_cms/CH/2017/03/14/CH33548709_w666_h968.jpg', title: '손병호게임', link: '/game/son', detail: '술게임으로 배우는 자바스크립트'},
-  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
-  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
-  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
-  {image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg', title: '플레이그라운드', link: '/playground', detail: '아무거나 하세요'},
+  {image: 'http://img2.sbs.co.kr/img/sbs_cms/CH/2017/03/14/CH33548709_w666_h968.jpg', title: '손병호게임', link: '/learn/son', detail: '술게임으로 배우는 자바스크립트'},
+  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다'},
+  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다'},
+  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/learn/son', detail: '뭔가 보여드리겠습니다'},
+  {image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg', title: '플레이그라운드', link: '/learn/playground', detail: '아무거나 하세요'},
 ]
 
 const Main = () => (
