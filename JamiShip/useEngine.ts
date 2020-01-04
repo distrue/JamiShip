@@ -1,13 +1,15 @@
 import Executor from './core';
-import { LogFunc, UserCode } from './types';
-import Game, { CircleGame } from './games/circleGame';
+import { LogFunc, UserCode, Game } from './types';
+import { CircleGame } from './games/circleGame';
 import {SBHGame} from './games/sonbeonghoGame';
 import {RaindropGame} from '../JamiShip/games/raindrop';
+import ShootGame from './games/shoot';
 
 const GAMES = {
   circle: CircleGame,
   sonbeong: SBHGame,
-  raindrop: RaindropGame
+  raindrop: RaindropGame,
+  shoot: ShootGame
 };
 
 let exec: Executor;
@@ -37,8 +39,10 @@ export default function useEngine() {
       while (frameNo < 2) {
         codeObj.loop();
         logger('system', `${frameNo}프레임 실행`);
-        const cont = game.frame(frameNo);
-        if (!cont) {
+        const result = await game.frame(frameNo);
+        if (result !== undefined) {
+          logger('system', '게임의 결과:');
+          logger('log', result);
           break;
         }
         frameNo += 1;
