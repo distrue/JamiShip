@@ -9,7 +9,7 @@ export default function useEngine() {
   const setGame = (id: string) => {
     console.log(id);
     // TODO: parse id string
-    game = new CircleGame();
+    game = new SBHGame();
     exec.inject(game.controllers);
   };
 
