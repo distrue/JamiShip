@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import Layout from '../components/Layout';
 
 interface GameItemProps {
   image: string;
@@ -24,7 +25,7 @@ const GameItem = (props: GameItemProps) => (
 );
 
 const items: GameItemProps[] = [
-  {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
+  {image: 'http://img2.sbs.co.kr/img/sbs_cms/CH/2017/03/14/CH33548709_w666_h968.jpg', title: '손병호게임', link: '/game/son', detail: '술게임으로 배우는 자바스크립트'},
   {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
   {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
   {image: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Google-flutter-logo.png', title: 'asdf', link: '/game/son', detail: '뭔가 보여드리겠습니다'},
@@ -32,17 +33,20 @@ const items: GameItemProps[] = [
 ]
 
 const Main = () => (
-  <div>
+  <Layout>
     <Container>
-      <h1>JamiShip</h1>
+      <h1>학습 시작하기</h1>
       <div className="items">
         {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={v.link} detail={v.detail} /> )}
       </div>
     </Container>
-  </div>
+  </Layout>
 );
 
 const Container = styled.div`
+  & {
+    padding-top: 8px;
+  }
   h1 {
     margin-left: 16px;
     margin-top: 16px;
@@ -75,8 +79,9 @@ const ItemContainer = styled.div`
     justify-content: center;
   }
   img {
-    width: 100%;
     padding: auto;
+    max-height: 200px;
+    max-width: 100%;
   }
   h2 {
     margin: 12px 0 8px 0;
