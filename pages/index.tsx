@@ -10,13 +10,15 @@ const CodeEditor = dynamic(import('../components/CodeEditor'), {
 });
 
 const defaultCode = `function setup() {
-
+  setGame("circle");
+  logger.dir(Game);
+  Game.add(20, 20);
 }
 function init() {
-    
+  
 }
 function loop() {
-    
+  
 }`;
 
 export default () => {
@@ -28,9 +30,15 @@ export default () => {
   const { start, compile } = useEngine();
 
   // eslint-disable-next-line
-  const logger = ((level: 'log' | 'warn' | 'error', value: string) => {
+  const logger = ((level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
     const data = logData;
-    const cnt = data.push({ level, value: value.toString() });
+    const cnt = data.push({
+      level,
+      value: level === 'dir' ? JSON.stringify(Object.entries(value)) : value.toString() 
+    });
+    if(level === 'error') {
+      console.error(value);
+    }
     setLog(cnt);
     setLogData(data);
   });
@@ -39,7 +47,7 @@ export default () => {
     if (codeObj === null) {
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj);
+      start(logger, codeObj).then(() => console.log('complete'));
     }
   };
   const compileHandler = () => {
@@ -49,6 +57,9 @@ export default () => {
   return (
     <>
       <Background>
+        <div id="canvas-container">
+          
+        </div>
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />

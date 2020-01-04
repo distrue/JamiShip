@@ -1,19 +1,21 @@
 import Executor, { LogFunc, ForeignCode } from './Execute';
 import Game, { CircleGame } from './Game';
 
+let exec: Executor;
+let game: Game<any>;
+
 export default function useEngine() {
-  let exec: Executor;
-  let game: Game<any>;
 
   const setGame = (id: string) => {
     console.log(id);
     // TODO: parse id string
     game = new CircleGame();
-    exec.inject(game.api);
+    exec.inject(game.controllers);
   }
 
   const init = (logger: LogFunc, codeObj: ForeignCode) => {
     try {
+      console.log("nowgame", game);
       codeObj.init();
     } catch (err) {
       logger('error', err);
@@ -23,8 +25,9 @@ export default function useEngine() {
   const runLoop = async (logger: LogFunc, codeObj: ForeignCode) => {
     let frameNo = 1;
     try {
-      while(true) {
+      while(frameNo < 2 ) {
         codeObj.loop();
+        console.log('Game', game);
         const cont = game.frame(frameNo);
         if (!cont) {
           break;
@@ -48,10 +51,12 @@ export default function useEngine() {
   };
 
   const compile = (setCodeObj: (obj: ForeignCode) => unknown, logger: LogFunc, code: string) => {
+    document.getElementById("canvas-container")!.innerText = "";
     if (!exec) {
       exec = new Executor(logger, {setGame});
     }
     try {
+      exec.inject({setGame});
       exec.setCode(code);
       const codeObj = exec.getExec();
       setCodeObj(codeObj);

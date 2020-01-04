@@ -110,8 +110,12 @@ export class BaseObj {
    * @param size 이미지의 사이즈
    * @param location 이미지 위치 왼쪽 위가 0,0
    */
-  constructor(canvasId: string, srcs: string[], overlapable: boolean, size: { x: number; y: number }, location = { x: 0, y: 0 }) {
-    this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+  constructor(srcs: string[], overlapable: boolean, size: { x: number; y: number }, location = { x: 0, y: 0 }) {
+    const canvasParent = document.getElementById("canvas-container");
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = 800;
+    this.canvas.height = 600;
+    canvasParent?.appendChild(this.canvas)
     this.ctx = this.canvas.getContext('2d')!;
     this.srcs = srcs;
     this.location = location;
