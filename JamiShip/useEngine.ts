@@ -1,5 +1,6 @@
-import Executor, { LogFunc, ForeignCode } from './Execute';
-import Game, { CircleGame } from './Game';
+import Executor from './core';
+import { LogFunc, UserCode } from './types';
+import Game, { CircleGame } from './games/circleGame';
 
 let exec: Executor;
 let game: Game<any>;
@@ -12,7 +13,7 @@ export default function useEngine() {
     exec.inject(game.controllers);
   };
 
-  const init = (logger: LogFunc, codeObj: ForeignCode) => {
+  const init = (logger: LogFunc, codeObj: UserCode) => {
     try {
       console.log('nowgame', game);
       codeObj.init();
@@ -21,17 +22,17 @@ export default function useEngine() {
     }
   };
 
-  const runLoop = async (logger: LogFunc, codeObj: ForeignCode) => {
+  const runLoop = async (logger: LogFunc, codeObj: UserCode) => {
     let frameNo = 1;
     try {
       while (frameNo < 2) {
         codeObj.loop();
-        console.log('Game', game);
+        logger('log', `Run code(Frame ${frameNo})`);
         const cont = game.frame(frameNo);
         if (!cont) {
           break;
         }
-        frameNo++;
+        frameNo += 1;
       }
     } catch (err) {
       logger('error', `Error running frame ${frameNo}`);
@@ -39,7 +40,7 @@ export default function useEngine() {
     }
   };
 
-  const start = async (logger: LogFunc, codeObj: ForeignCode) => {
+  const start = async (logger: LogFunc, codeObj: UserCode) => {
     try {
       init(logger, codeObj);
     } catch (err) {
@@ -49,7 +50,7 @@ export default function useEngine() {
     await runLoop(logger, codeObj);
   };
 
-  const compile = (setCodeObj: (obj: ForeignCode) => unknown, logger: LogFunc, code: string) => {
+  const compile = (setCodeObj: (obj: UserCode) => unknown, logger: LogFunc, code: string) => {
     document.getElementById('canvas-container')!.innerText = '';
     if (!exec) {
       exec = new Executor(logger, { setGame });

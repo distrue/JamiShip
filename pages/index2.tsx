@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import useEngine from '../JamiShip/useEngine';
-import { ForeignCode } from '../JamiShip/Execute';
-import Logger, { LogItem } from '../components/Logger';
+import { useEngine, useLogger } from '../JamiShip';
+import { UserCode, LogItem } from '../JamiShip/types';
+import Logger from '../components/Logger';
 
 const CodeEditor = dynamic(import('../components/CodeEditor'), {
   ssr: false,
@@ -21,39 +21,18 @@ function loop() {
   Game.move(2);
 }`;
 
-const dirPrint = (value: Object) => {
-  let ans = '[Game Object]';
-  for (const [key, val] of Object.entries(value)) {
-    ans = ans.concat('\n', `${key}: ${val.toString()}`);
-  }
-  console.log(ans);
-  return ans;
-};
 export default () => {
   // eslint-disable-next-line
   const [code, setCode] = useState(defaultCode);
-  const [codeObj, setCodeObj] = useState<ForeignCode | null>(null);
-  const [log, setLog] = useState(0);
-  const [logData, setLogData] = useState<LogItem[]>([]);
+  const [codeObj, setCodeObj] = useState<UserCode | null>(null);
   const { start, compile } = useEngine();
 
-  // eslint-disable-next-line
-  const logger = ((level: 'dir' | 'log' | 'warn' | 'error', value: any) => {
-    const data = logData;
-    const cnt = data.push({
-      level,
-      value: level === 'dir' ? dirPrint(value) : value.toString(),
-    });
-    if (level === 'error') {
-      console.error(value);
-    }
-    setLog(cnt);
-    setLogData(data);
-  });
+  const [logData, setLogData] = useState<LogItem[]>([]);
+  const logger = useLogger(logData, setLogData);
 
   const startHandler = () => {
     if (codeObj === null) {
-      alert('Code not loaded!');
+      alert('Code not loaded! please compile code');
     } else {
       start(logger, codeObj).then(() => console.log('complete'));
     }
@@ -68,7 +47,7 @@ export default () => {
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
-          <Logger count={log} logData={logData} />
+          <Logger logData={logData} />
         </div>
         <button type="button" className="t1" onClick={compileHandler}>Compile</button>
         <button type="button" className="t2" onClick={startHandler}>Run</button>
