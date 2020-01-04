@@ -14,6 +14,7 @@ const TopBar = (props: TopBarProps) => {
   const [helpIndex, setHelpIndex] = useState(0);
   const router = useRouter();
   useEffect(() => {
+    console.log(props.help);
     if (!nv && props.help !== undefined && props.help.length > 0) {
       setNv(true);
       setHelpVisible(true);

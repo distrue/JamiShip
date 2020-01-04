@@ -103,8 +103,8 @@ const Background = styled.div`
   box-sizing: border-box;
   position: absolute;
   top: 0; left: 0;
-  grid-template-rows: 450px 36px auto;
-  grid-template-columns: 800px auto;
+  grid-template-rows: 450px 36px calc(100% - 486px);
+  grid-template-columns: 800px calc(100% - 800px);
   display: grid;
   canvas {
     position: absolute;
