@@ -70,8 +70,8 @@ export default () => {
         <div className="state">
           <Logger count={log} logData={logData} />
         </div>
-        <button type="button" className="t1" onClick={compileHandler}>Reload</button>
-        <button type="button" className="t2" onClick={startHandler}>Init()</button>
+        <button type="button" className="t1" onClick={compileHandler}>Compile</button>
+        <button type="button" className="t2" onClick={startHandler}>Run</button>
       </Background>
     </>
   );
