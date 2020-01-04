@@ -5,24 +5,28 @@ export default interface Game<T> {
   frame: (frameNo: number) => Promise<boolean>;
 };
 
-interface puzzle8GameApi {
+interface Puzzle8GameApi {
   move: (num: number) => void;
   getState: () => void;
+  setState: (state: string) => void;
+  getGoalState: () => void;
+  setGoalState: (state: string) => void;
 };
 
-export class puzzle8Game implements Game<puzzle8GameApi> {
-  private tempState: string = '806547231';
+export class Puzzle8Game implements Game<Puzzle8GameApi> {
+  private tempState: string = '312458607';
   private goalState: string = '012345678';
   private goableIndexesList: number[][] = [[1, 3], [0, 2, 4], [1, 5], [0, 4, 6], [1, 3, 5, 7], [2, 4, 8], [3, 7], [4, 6, 8], [5, 7]];
   private createTable() {
     const table = new Table(this.tempState);
     return table;
   }
-  private stateToString() {
+  // eslint-disable-next-line class-methods-use-this
+  private stateToString(state: string) {
     let result = '';
     for (let i = 0; i < 3; i += 1) {
       for (let j = 0; j < 3; j += 1) {
-        result += this.tempState[3 * i + j];
+        result += state[3 * i + j];
       }
       result += '\n';
     }
@@ -40,14 +44,26 @@ export class puzzle8Game implements Game<puzzle8GameApi> {
   public controllers = { // export controllers
     move: (num: number) => {
       const zeroIdx = this.tempState.indexOf('0');
-      if (num in this.goableIndexesList[zeroIdx]) {
-        this.tempState = this.swap(this.tempState, num);
-      }
-      else logger.log('impossible!');
+      const targetIdx = this.tempState.indexOf(num.toString());
+      console.log(targetIdx, this.goableIndexesList[zeroIdx]);
+      if (this.goableIndexesList[zeroIdx].includes(targetIdx)) {
+        this.tempState = this.swap(this.tempState, targetIdx);
+      } else logger.log('impossible!');
       this.createTable();
     },
     getState: () => {
-      logger.log(`Current state: \n${this.stateToString()}.`);
+      logger.log(`Current state: \n${this.stateToString(this.tempState)}`);
+    },
+    setState: (state: string) => {
+      this.tempState = state;
+      this.createTable();
+    },
+    getGoalState: () => {
+      logger.log(`Goal state: \n${this.stateToString(this.goalState)}`);
+    },
+    setGoalState: (state: string) => {
+      this.goalState = state;
+      logger.log(`Goal State: \n${this.stateToString(this.goalState)}.`);
     },
   };
   /**

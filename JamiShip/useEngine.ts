@@ -1,15 +1,17 @@
 import Executor from './core';
 import { LogFunc, UserCode, Game } from './types';
 import { CircleGame } from '../games/circleGame';
-import {SBHGame} from '../games/sonbeonghoGame';
-import {RaindropGame} from '../games/raindrop';
+import { SBHGame } from '../games/sonbeonghoGame';
+import { RaindropGame } from '../games/raindrop';
 import ShootGame from '../games/shoot';
+import { Puzzle8Game } from '../games/puzzle8';
 
 const GAMES = {
   circle: CircleGame,
   sonbeong: SBHGame,
   raindrop: RaindropGame,
-  shoot: ShootGame
+  shoot: ShootGame,
+  puzzle8: Puzzle8Game,
 };
 
 let exec: Executor;
