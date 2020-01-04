@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { GameDisplay as items } from '../JamiShip/gameList';
+import { GameDisplay as items } from '../games/gameList';
 
 interface GameItemProps {
   image: string;

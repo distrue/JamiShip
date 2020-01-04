@@ -55,7 +55,14 @@ const raindrop = {
 }
 
 function init() {
-
+  Game.addRaindrop(500, 10);
+  Game.addRaindrop(200, 5);
+  Game.addRaindrop(400, 5);
+  Game.addTraveler();
+  Game.randomTravelerMove();
+  for (let i = 0 ; i < 10; i +=1) {
+    Game.addRaindrop(Math.random()*1000, Math.random()*10);
+  }
 }
 
 function loop() {
