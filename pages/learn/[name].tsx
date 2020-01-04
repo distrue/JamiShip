@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { MdRefresh, MdPlayArrow } from 'react-icons/md';
 import { useRouter } from 'next/router';
-import { useEngine, useLogger } from '../../JamiShip';
-import { UserCode, LogItem } from '../../JamiShip/types';
+import { useEngine, useLogger, types } from 'jamiship';
 import Logger from '../../components/Logger';
 import TopBar from '../../components/TopBar';
 import { GameDisplay, EmptyGame } from '../../games/gameList';
@@ -31,24 +30,28 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
 
-let inv: any;
+function useForceUpdate(){
+  const [_, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
+
+let timer: any;
 
 export default function NamePage() {
   const router = useRouter();
   // eslint-disable-next-line
   const [executed, setExecuted] = useState(false);
-  const [code, setCode] = useState("");
-  const [codeObj, setCodeObj] = useState<UserCode | null>(null);
+  const [code, setCode] = useState('');
+  const [codeObj, setCodeObj] = useState<types.UserCode | null>(null);
   const [help, setHelp] = useState<string[]>([]);
-  const [logData, setLogData] = useState<LogItem[]>([]);
+  const [logData, setLogData] = useState<types.LogItem[]>([]); 
   const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
+  const forceUpdate = useForceUpdate();
 
-  if (!inv) {
-    inv = setInterval(() => {
-      setExecuted(executed);
-    }, 500);
+  if (!timer) {
+    timer = setInterval(forceUpdate, 500);
   }
 
   React.useEffect(() => {
@@ -104,8 +107,8 @@ const Background = styled.div`
   box-sizing: border-box;
   position: absolute;
   top: 0; left: 0;
-  grid-template-rows: 60% 36px calc(40% - 36px);
-  grid-template-columns: 60% 40%;
+  grid-template-rows: 450px 36px calc(100% - 486px);
+  grid-template-columns: 800px calc(100% - 800px);
   display: grid;
   canvas {
     position: absolute;

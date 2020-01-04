@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { LogItem } from '../JamiShip/types';
+import { types } from 'jamiship';
 
 function useForceUpdate() {
   const [, setTick] = React.useState(0);
   const update = React.useCallback(() => {
-    setTick(tick => tick + 1);
-  }, [])
+    setTick((tick) => tick + 1);
+  }, []);
   return update;
 }
 
@@ -19,8 +19,8 @@ const Logger = ({ logData, callee }: LoggerProps) => {
   const forceUpdate = useForceUpdate();
 
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
-  const mapLogItem = (v: LogItem, i: number) => (
-    <div className={v.level} key={i} style={{whiteSpace: "pre"}}>{v.value}</div>
+  const mapLogItem = (v: types.LogItem, i: number) => (
+    <div className={v.level} key={i} style={{ whiteSpace: 'pre' }}>{v.value}</div>
   );
 
   useEffect(() => {
@@ -28,12 +28,12 @@ const Logger = ({ logData, callee }: LoggerProps) => {
   });
   useEffect(() => {
     forceUpdate();
-  }, [logData]);
+  }, [forceUpdate, logData]);
   return (
     <Container>
       {logData.map(mapLogItem)}
       <div ref={endRef} />
-      <div style={{display: "none"}}>{callee}</div>
+      <div style={{ display: 'none' }}>{callee}</div>
     </Container>
   );
 };

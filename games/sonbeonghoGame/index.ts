@@ -1,5 +1,5 @@
+import { types } from 'jamiship';
 import { BaseObj } from './component';
-import { Game } from '../../JamiShip/types';
 
 type filters = 'hairColor' | 'onGlasses' | 'height';
 
@@ -7,9 +7,9 @@ interface SBHGameApi {
   add: (x: number, y: number, objterm: string, traits: any) => unknown;
   bh: (frameNo: number, type: filters, value: string) => unknown;
   desc_add: string
-};
+}
 
-export class SBHGame implements Game<SBHGameApi> {
+export class SBHGame implements types.Game<SBHGameApi> {
   private people: any[] = [];
 
   public controllers = { // export controllers
@@ -26,7 +26,7 @@ export class SBHGame implements Game<SBHGameApi> {
         person.addSrc(`/imgs/hair_${traits.hairColor}.png`);
       }
       if (traits.onGlasses) {
-        person.addSrc(`/imgs/glass.png`);
+        person.addSrc('/imgs/glass.png');
       }
       if (traits.height) {
         person.setHeight(traits.height);
@@ -34,7 +34,7 @@ export class SBHGame implements Game<SBHGameApi> {
       this.people.push(person);
       person.draw();
     },
-    desc_bh: "자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.",
+    desc_bh: '자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.',
     bh: (frameNo: number, type?: filters, value?: string) => {
       console.log(type!, value!);
       if (frameNo <= this.people.length) {
@@ -60,7 +60,7 @@ export class SBHGame implements Game<SBHGameApi> {
       }
       return false;
     },
-    
+
   };
   /**
    * @description 단위 frame 동안 game 자체의 controller를 동작시키는 함수
@@ -79,7 +79,7 @@ export class SBHGame implements Game<SBHGameApi> {
         .then(() => testBase2.moveToWithCheckBump([testBase], 100, 140, 1500)).then(() => testBase.moveToWithCheckBump([testBase2], 300, 200, 200)),
     ];
     await Promise.all(pms); */
-    if(frameNo < 3) return undefined;
+    if (frameNo < 3) return undefined;
     return true;
   }
 

@@ -5,3 +5,4 @@ declare namespace logger {
   const error: (v: string) => unknown;
   const warn: (v: string) => unknown;
 }
+declare module 'jamiship';

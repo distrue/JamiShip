@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { MdClose, MdNavigateNext, MdNavigateBefore } from 'react-icons/md';
 
@@ -13,6 +13,11 @@ interface HintModalProps {
 export default function HintModal(props: HintModalProps) {
   const {text, visible, index, onClose, setIndex} = props;
   if (!visible) return null;
+  useEffect(() => {
+    if(text.length === 0) {
+      onClose();
+    }
+  })
   return (
     <Container>
       <div className="close">
@@ -31,7 +36,7 @@ export default function HintModal(props: HintModalProps) {
 const Container = styled.div`
   & {
     position: fixed;
-    height: 35vh;
+    min-height: 35vh;
     width: 50vw;
     left: 5vw;
     top: 15vh;
