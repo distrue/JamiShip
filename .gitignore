@@ -2,3 +2,4 @@ yarn.lock
 node_modules
 yarn-error.log
 .next
+package-lock.json
