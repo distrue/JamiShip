@@ -62,6 +62,7 @@ export class BaseObj {
   private location: { x: number; y: number }; // 이미지 위치 왼쪽 위가 0,0
   private overlapable: boolean; // 겹쳐질 수 있는지 true이면 겹쳐질 수 있음.
   private innerRect: Rectangular;
+  private imgs: HTMLImageElement[];
 
   /**
    * @param canvasId 사용할 canvas의 id
@@ -76,7 +77,6 @@ export class BaseObj {
     this.srcs = srcs;
     this.location = location;
     this.size = size;
-    this.draw();
     this.overlapable = overlapable;
     const margin = { x: size.x / 10, y: size.y / 10 };
     this.innerRect = {
@@ -85,6 +85,8 @@ export class BaseObj {
       y1: location.y + margin.y,
       y2: location.y + size.y - margin.y,
     };
+    this.imgs = [];
+    this.draw();
   }
   addSrc(src: string) {
     this.srcs = [...this.srcs, src];
@@ -101,23 +103,28 @@ export class BaseObj {
   getOverlapable() {
     return this.overlapable;
   }
-  getImages() {
+  private getImageSrcs() {
     const ret = [];
     for (let i = 0; i < this.srcs.length; i += 1) {
-      ret.push({
-        src: this.srcs[i],
-      });
+      if (this.imgs.findIndex((img) => img.src === this.srcs[i]) === -1) { // load 되지 않은 이미지들만 push
+        ret.push({
+          src: this.srcs[i],
+        });
+      }
     }
     return ret;
   }
   draw() {
-    const getImgs = this.getImages();
+    const getImgs = this.getImageSrcs();
     loadImage(
       getImgs.map((infos) => infos.src),
-      this.getImages().length - 1,
+      getImgs.length - 1,
     ).then((imgs) => {
-      for (let i = 0; i < getImgs.length; i += 1) {
-        this.ctx.drawImage(imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
+      this.imgs = [...this.imgs, ...imgs];
+      return true;
+    }).then(() => {
+      for (let i = 0; i < this.imgs.length; i += 1) {
+        this.ctx.drawImage(this.imgs[i], this.location.x, this.location.y, this.size.x, this.size.y);
       }
     });
   }
