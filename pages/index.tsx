@@ -1,3 +1,10 @@
 import React from 'react';
+import engine from '../runtimeEngine';
 
-export default () => <div>Hello</div>;
+export default () => {
+  React.useEffect(() => {
+    engine();
+  }, []);
+
+  return <div>Hello</div>;
+};
