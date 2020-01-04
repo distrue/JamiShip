@@ -17,6 +17,7 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
 export default function NamePage() {
   const router = useRouter();
   // eslint-disable-next-line
+  const [executed, setExecuted] = useState(false);
   const [code, setCode] = useState("");
   const [codeObj, setCodeObj] = useState<UserCode | null>(null);
   const [help, setHelp] = useState<string[]>([]);
@@ -29,20 +30,24 @@ export default function NamePage() {
     const key = router.query.name;
     const filtered = GameDisplay.filter((x) => (x.id === key));
     const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
-    console.log(filtered);
     setCode(currentGame.stub);
     setHelp(currentGame.tutorial);
   }, [router.query.name]);
   const startHandler = () => {
+    if (executed) {
+      compileHandler();
+    }
     if (codeObj === null) {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
       start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
+      setExecuted(true);
     }
   };
   const compileHandler = () => {
     compile(setCodeObj, logger, code);
+    setExecuted(false);
   };
 
   return (
