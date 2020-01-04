@@ -9,8 +9,8 @@ const Index = () => {
   const [queueNum, setQueueNum] = React.useState<number[]>([]);
 
   React.useState(() => {
-    setTableColor([[false, true, true], [false, true, false], [false, false, false]]);
-    setTableNum([[-1, -1, 1], [-1, -1, -1], [-1, -1, -1]]);
+    setTableColor([[false, true, false], [false, true, false], [false, false, false]]);
+    setTableNum([[11, 1, 1], [2, -1, -1], [-1, -1, -1]]);
     setQueueNum([]);
   });
 
