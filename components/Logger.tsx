@@ -4,12 +4,12 @@ import styled from 'styled-components';
 export interface LogItem {
   level: 'dir' | 'log' | 'warn' | 'error';
   value: string;
-}
+};
 
 interface LoggerProps {
   count: number;
   logData: any;
-}
+};
 
 const Logger = (props: LoggerProps) => {
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
