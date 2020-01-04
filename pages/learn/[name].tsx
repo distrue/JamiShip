@@ -30,7 +30,12 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
 
-let inv: any;
+function useForceUpdate(){
+  const [_, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
+
+let timer: any;
 
 export default function NamePage() {
   const router = useRouter();
@@ -43,11 +48,10 @@ export default function NamePage() {
   const logger = useLogger(logData, setLogData);
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
+  const forceUpdate = useForceUpdate();
 
-  if (!inv) {
-    inv = setInterval(() => {
-      setExecuted(executed);
-    }, 500);
+  if (!timer) {
+    timer = setInterval(forceUpdate, 500);
   }
 
   React.useEffect(() => {
