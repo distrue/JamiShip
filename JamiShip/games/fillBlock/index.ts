@@ -1,15 +1,15 @@
-import { BaseObj } from '../component';
+import { BaseObj } from '../../component';
 
 export default interface Game<T> {
   controllers: T;
   frame: (frameNo: number) => Promise<boolean>;
 };
 
-interface CircleGameApi {
+interface FillBlockGameApi {
   add: (x: number, y: number) => unknown;
 };
 
-export class CircleGame implements Game<CircleGameApi> {
+export class FillBlockGame implements Game<FillBlockGameApi> {
   private circles: any[] = [];
 
   public controllers = { // export controllers
@@ -22,8 +22,8 @@ export class CircleGame implements Game<CircleGameApi> {
       );
       this.circles.push(testBase);
     },
-    move: (num: number, duration: number) => {
-      this.circles[num].moveTo(400, 200, duration);
+    move: (num: number, x: number, y: number, duration: number) => {
+      this.circles[num].moveTo(x, y, duration);
     },
   };
   /**
@@ -49,7 +49,7 @@ export class CircleGame implements Game<CircleGameApi> {
 
   constructor() {
     this.circles = [];
-    this.controllers.add(0, 0);
-    this.controllers.add(100, 100);
+    // this.controllers.add(0, 0);
+    // this.controllers.add(100, 100);
   }
 }
