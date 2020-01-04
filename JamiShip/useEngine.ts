@@ -1,9 +1,11 @@
 import Executor from './core';
 import { LogFunc, UserCode } from './types';
 import Game, { CircleGame } from './games/circleGame';
+import {SBHGame} from './games/sonbeonghoGame';
 
 const GAMES = {
-  circle: CircleGame
+  circle: CircleGame,
+  sonbeong: SBHGame
 };
 
 let exec: Executor;

@@ -1,8 +1,4 @@
-<<<<<<< HEAD:JamiShip/games/circleGame/index.ts
 import { BaseObj } from './circle';
-=======
-import { BaseObj } from './games/sonbeonghoGame/component';
->>>>>>> origin/game_sbh:JamiShip/Game.ts
 
 export default interface Game<T> {
   controllers: T;
