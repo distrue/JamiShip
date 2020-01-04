@@ -1,18 +1,28 @@
-import Executor, { LogFunc, ForeignCode } from './Execute';
-import Game, { CircleGame } from './Game';
+import Executor from './core';
+import { LogFunc, UserCode } from './types';
+import Game, { CircleGame } from '../games/circleGame';
+import {SBHGame} from '../games/sonbeonghoGame';
+import {RaindropGame} from '../games/raindrop';
+
+const GAMES = {
+  circle: CircleGame,
+  sonbeong: SBHGame,
+  raindrop: RaindropGame
+};
 
 let exec: Executor;
 let game: Game<any>;
 
 export default function useEngine() {
   const setGame = (id: string) => {
-    console.log(id);
-    // TODO: parse id string
-    game = new CircleGame();
+    if (!Object.keys(GAMES).includes(id)) {
+      throw new Error('Game not found');
+    }
+    game = new (GAMES as any)[id]();
     exec.inject(game.controllers);
   };
 
-  const init = (logger: LogFunc, codeObj: ForeignCode) => {
+  const init = (logger: LogFunc, codeObj: UserCode) => {
     try {
       console.log('nowgame', game);
       codeObj.init();
@@ -21,17 +31,19 @@ export default function useEngine() {
     }
   };
 
-  const runLoop = async (logger: LogFunc, codeObj: ForeignCode) => {
+  const runLoop = async (logger: LogFunc, codeObj: UserCode) => {
     let frameNo = 1;
     try {
+      while (frameNo < 10) {
+        codeObj.loop(frameNo);
+        logger('system', `${frameNo}프레임 실행`);
       while (frameNo < 2) {
         codeObj.loop();
-        console.log('Game', game);
         const cont = game.frame(frameNo);
         if (!cont) {
           break;
         }
-        frameNo++;
+        frameNo += 1;
       }
     } catch (err) {
       logger('error', `Error running frame ${frameNo}`);
@@ -39,17 +51,19 @@ export default function useEngine() {
     }
   };
 
-  const start = async (logger: LogFunc, codeObj: ForeignCode) => {
+  const start = async (logger: LogFunc, codeObj: UserCode) => {
     try {
+      logger('system', '프로그램을 시작합니다.');
       init(logger, codeObj);
     } catch (err) {
       logger('error', 'Error during init');
       logger('error', err);
     }
     await runLoop(logger, codeObj);
+    logger('system', '프로그램 종료');
   };
 
-  const compile = (setCodeObj: (obj: ForeignCode) => unknown, logger: LogFunc, code: string) => {
+  const compile = (setCodeObj: (obj: UserCode) => unknown, logger: LogFunc, code: string) => {
     document.getElementById('canvas-container')!.innerText = '';
     if (!exec) {
       exec = new Executor(logger, { setGame });
@@ -59,7 +73,7 @@ export default function useEngine() {
       exec.setCode(code);
       const codeObj = exec.getExec();
       setCodeObj(codeObj);
-      logger('log', 'Reloaded code');
+      logger('system', '초기화되었습니다.');
       // setup은 컴파일 직후 실행 (ie. 페이지 로딩 후)
       codeObj.setup();
     } catch (err) {

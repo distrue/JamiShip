@@ -1,4 +1,4 @@
-import { BaseObj } from '../component';
+import { BaseObj } from './circle';
 
 export default interface Game<T> {
   controllers: T;
@@ -7,7 +7,7 @@ export default interface Game<T> {
 
 interface CircleGameApi {
   add: (x: number, y: number) => unknown;
-};
+}
 
 export class CircleGame implements Game<CircleGameApi> {
   private circles: any[] = [];
