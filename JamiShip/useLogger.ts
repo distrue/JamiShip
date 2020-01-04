@@ -2,12 +2,14 @@ import {LogItem} from './types';
 
 export type LogLevel = 'system' | 'dir' | 'log' | 'warn' | 'error';
 
-const dirPrint = (value: Object) => {
-    let ans = '[Game Object]';
+const dirPrint = (value: any) => {
+    let ans = `[Object method descriptions]`;
     for (const [key, val] of Object.entries(value)) {
-      ans = ans.concat('\n', `${key}: ${val.toString()}`);
+      if(typeof val === 'function') {
+        ans = ans.concat('\n', `${key}: ${value[`desc_${key}`]}`);
+      }
     }
-    console.log(ans);
+
     return ans;
   };
 

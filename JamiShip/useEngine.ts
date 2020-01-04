@@ -34,9 +34,11 @@ export default function useEngine() {
   const runLoop = async (logger: LogFunc, codeObj: UserCode) => {
     let frameNo = 1;
     try {
+      while (frameNo < 10) {
+        codeObj.loop(frameNo);
+        logger('system', `${frameNo}프레임 실행`);
       while (frameNo < 2) {
         codeObj.loop();
-        logger('system', `${frameNo}프레임 실행`);
         const cont = game.frame(frameNo);
         if (!cont) {
           break;
