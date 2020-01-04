@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-// import Table from '../../components/bfs/table';
+import Table from '../../components/bfs/table';
 import Queue from '../../components/bfs/queue';
 
 const Index = () => {
-  // const [tableColor, setTableColor] = React.useState<boolean[]>([]);
-  // const [tableNum, setTableNum] = React.useState<number[]>([]);
+  const [tableColor, setTableColor] = React.useState<boolean[][]>([[]]);
+  const [tableNum, setTableNum] = React.useState<number[][]>([[]]);
   const [queueNum, setQueueNum] = React.useState<number[]>([]);
 
   React.useState(() => {
-    // setTableColor([false, false, false, false, false, false, false, false, true]);
-    // setTableNum([0, 1, 2, 3, 4, 5, 6, 7]);
-    setQueueNum([0, 1, 2, 3]);
+    setTableColor([[false, true, false], [false, true, false], [false, false, false]]);
+    setTableNum([[11, 1, 1], [2, -1, -1], [-1, -1, -1]]);
+    setQueueNum([]);
   });
 
   return (
     <Background>
       <div className="canvas">
         <div className="table">
-          {/* <Table tempColor={tableColor} tempNum={tableNum} /> */}
+          <Table tempColor={tableColor} tempNum={tableNum} />
         </div>
       </div>
       <div className="cli">

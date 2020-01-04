@@ -7,7 +7,7 @@ const Index = () => {
   return (
     <Background>
       <div className="canvas">
-        <Person hairColor={'red'} />
+        <Person hairColor={'red'} foldedFinger={4} />
       </div>
       <div className="cli">
         {/* cli */}
