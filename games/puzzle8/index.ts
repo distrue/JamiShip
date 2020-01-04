@@ -6,11 +6,11 @@ export default interface Game<T> {
 };
 
 interface Puzzle8GameApi {
-  move: (num: number) => void;
-  getState: () => void;
-  setState: (state: string) => void;
-  getGoalState: () => void;
-  setGoalState: (state: string) => void;
+  move: (num: number) => string;
+  getState: () => string;
+  setState: (state: string) => string;
+  getGoalState: () => string;
+  setGoalState: (state: string) => string;
 };
 
 export class Puzzle8Game implements Game<Puzzle8GameApi> {
@@ -48,22 +48,27 @@ export class Puzzle8Game implements Game<Puzzle8GameApi> {
       console.log(targetIdx, this.goableIndexesList[zeroIdx]);
       if (this.goableIndexesList[zeroIdx].includes(targetIdx)) {
         this.tempState = this.swap(this.tempState, targetIdx);
-      } else logger.log('impossible!');
+      } else logger.log(`Impossible to move ${num}!`);
       this.createTable();
+      return this.tempState;
     },
     getState: () => {
       logger.log(`Current state: \n${this.stateToString(this.tempState)}`);
+      return this.tempState;
     },
     setState: (state: string) => {
       this.tempState = state;
       this.createTable();
+      return this.tempState;
     },
     getGoalState: () => {
       logger.log(`Goal state: \n${this.stateToString(this.goalState)}`);
+      return this.goalState;
     },
     setGoalState: (state: string) => {
       this.goalState = state;
       logger.log(`Goal State: \n${this.stateToString(this.goalState)}.`);
+      return this.goalState;
     },
   };
   /**
