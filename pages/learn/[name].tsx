@@ -86,6 +86,7 @@ const Background = styled.div`
     width: 100%;
     height: 100%;
     background-color: #FFF;
+    z-index: -1;
   }
   .cli {
     grid-row: 1 / 4;
@@ -94,6 +95,7 @@ const Background = styled.div`
     height: 100%;
     width: 100%;
     box-sizing: border-box;
+    z-index: 1;
   }
   .controls {
     grid-row: 2 / 3;
@@ -103,6 +105,7 @@ const Background = styled.div`
     flex-direction: row;
     align-items: center;
     padding-left: 8px;
+    z-index: 1;
   }
   .control-item {
     z-index: 100000;
@@ -120,8 +123,9 @@ const Background = styled.div`
     }
   }
   .state {
+    z-index: 1;
     grid-row: 3 / 4;
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
   }
   .t1 {
     position: absolute;
