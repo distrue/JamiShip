@@ -12,6 +12,7 @@ import { GameDisplay, EmptyGame } from '../../games/gameList';
 import { CircleGame } from '../../games/circleGame';
 import { SBHGame } from '../../games/sonbeonghoGame';
 import { RaindropGame } from '../../games/raindrop';
+import { FillBlockGame } from '../../games/fillblock';
 import ShootGame from '../../games/shoot';
 import FactoryGame from '../../games/factory';
 import { Puzzle8Game } from '../../games/puzzle8';
@@ -21,6 +22,7 @@ const GAMES = {
   sonbeong: SBHGame,
   raindrop: RaindropGame,
   shoot: ShootGame,
+  fillBlock: FillBlockGame,
   factory: FactoryGame,
   puzzle8: Puzzle8Game
 };
@@ -64,7 +66,7 @@ export default function NamePage() {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
+      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => { });
       setExecuted(true);
     }
   };
