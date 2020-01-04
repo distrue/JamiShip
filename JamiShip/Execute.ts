@@ -21,6 +21,7 @@ export interface RunnerControls {
 export interface ForeignCode {
   init: () => unknown;
   loop: () => unknown;
+  setup: () => unknown;
 }
 
 /**
@@ -39,11 +40,14 @@ function makeFunc(input: string): ForeignCode {
       const loopDefault = () => {
         throw new Error('Exec error: Loop undefined');
       }
+      const setupDefault = () => {}
       const initFunc = typeof(init) === 'undefined' ? initDefault : init;
+      const setupFunc = typeof(setup) === 'undefined' ? setupDefault : setup;
       const loopFunc = typeof(loop) === 'undefined' ? loopDefault : loop;
       return {
         init: initFunc,
-        loop: loopFunc
+        loop: loopFunc,
+        setup: setupFunc
       };
     })();
   `)();

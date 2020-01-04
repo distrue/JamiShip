@@ -10,7 +10,10 @@ const CodeEditor = dynamic(import('../components/CodeEditor'), {
   ssr: false,
 });
 
-const defaultCode = `function init() {
+const defaultCode = `function setup() {
+  
+}
+function init() {
     
 }
 function loop() {
