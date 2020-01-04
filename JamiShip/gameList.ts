@@ -35,6 +35,7 @@ const sonbeonghoGame = {
   Game.add(300, 100, 'character', { hairColor: 'green', height: 190 });
   Game.add(450, 200, 'character', { onGlasses: true, hairColor: 'black', height: 180 });
   Game.add(300, 300, 'character', { onGlasses: true, hairColor: 'red', height: 180 });
+  logger.dir(Game);
 }
 function init() {
 }

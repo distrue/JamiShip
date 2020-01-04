@@ -10,6 +10,7 @@ type filters = 'hairColor' | 'onGlasses' | 'height';
 interface SBHGameApi {
   add: (x: number, y: number, objterm: string, traits: any) => unknown;
   bh: (frameNo: number, type: filters, value: string) => unknown;
+  desc_add: string
 };
 
 export class SBHGame implements Game<SBHGameApi> {
@@ -18,6 +19,7 @@ export class SBHGame implements Game<SBHGameApi> {
   private glasses: any[] = [];
 
   public controllers = { // export controllers
+    desc_add: "trait, objterm을 설정해 person을 생성합니다.",
     add: (x: number, y: number, objterm: string, traits: any) => {
       const person = new BaseObj(
         [`/imgs/${objterm}.png`],
@@ -56,6 +58,7 @@ export class SBHGame implements Game<SBHGameApi> {
         this.hairs.push(hair);
       }
     },
+    desc_bh: "자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.",
     bh: (frameNo: number, type?: filters, value?: string) => {
       console.log(type!, value!);
       if(frameNo < this.people.length) {
