@@ -11,59 +11,56 @@ interface SBHGameApi {
 
 export class SBHGame implements types.Game<SBHGameApi> {
   private people: any[] = [];
-  private hairs: any[] = [];
-  private glasses: any[] = [];
 
   public controllers = { // export controllers
-    desc_add: 'trait, objterm을 설정해 person을 생성합니다.',
+    desc_add: 'trait에 따라 모습이 달라지는 새로운 class person을 생성합니다.',
     add: (x: number, y: number, objterm: string, traits: any) => {
       const person = new BaseObj(
         [`/imgs/${objterm}.png`],
         '',
-        { x: 50, y: 80 },
+        { x: 80, y: 120 },
         x && y ? { x, y } : undefined,
       );
-      this.people.push(person);
 
       if (traits.hairColor) {
-        const hair = new BaseObj(
-          [`/imgs/hair_${traits.hairColor}.png`],
-          '',
-          { x: 50, y: 80 },
-          x && y ? { x, y } : undefined,
-        );
-        this.hairs.push(hair);
+        person.addSrc(`/imgs/hair_${traits.hairColor}.png`);
       }
       if (traits.onGlasses) {
-        const glass = new BaseObj(
-          ['/imgs/glass.png'],
-          '',
-          { x: 50, y: 80 },
-          x && y ? { x, y } : undefined,
-        );
-        this.glasses.push(glass);
+        person.addSrc('/imgs/glass.png');
       }
       if (traits.height) {
-        console.log(traits.height);
-        const hair = new BaseObj(
-          [],
-          traits.height,
-          { x: 70, y: 80 },
-          x && y ? { x, y } : undefined,
-        );
-        this.hairs.push(hair);
+        person.setHeight(traits.height);
       }
+      this.people.push(person);
+      person.draw();
     },
     desc_bh: '자기 자신과, frame에 맞는 상대방을 쓰러트릴 수 있는 기준을 설정해 공격합니다.',
     bh: (frameNo: number, type?: filters, value?: string) => {
       console.log(type!, value!);
-      if (frameNo < this.people.length) {
-        this.people[frameNo].addSrc('/imgs/dead.png');
-        this.people[frameNo].draw();
-        this.people[0].addSrc('/imgs/dead.png');
-        this.people[0].draw();
+      if (frameNo <= this.people.length) {
+        if (type && value) {
+          if (type === 'hairColor' || type === 'onGlasses') {
+            if (this.people[frameNo - 1].srcs.join('').indexOf(value) !== -1) {
+              this.people[frameNo - 1].addSrc('/imgs/dead.png');
+              this.people[frameNo - 1].draw();
+              return true;
+            }
+          } else if (type === 'height') {
+            if (this.people[frameNo - 1].innerText === value) {
+              this.people[frameNo - 1].addSrc('/imgs/dead.png');
+              this.people[frameNo - 1].draw();
+              return true;
+            }
+          }
+        } else {
+          this.people[frameNo - 1].addSrc('/imgs/dead.png');
+          this.people[frameNo - 1].draw();
+        }
+        return false;
       }
+      return false;
     },
+
   };
   /**
    * @description 단위 frame 동안 game 자체의 controller를 동작시키는 함수

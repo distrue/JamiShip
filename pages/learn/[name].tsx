@@ -11,19 +11,26 @@ import { GameDisplay, EmptyGame } from '../../games/gameList';
 import { CircleGame } from '../../games/circleGame';
 import { SBHGame } from '../../games/sonbeonghoGame';
 import { RaindropGame } from '../../games/raindrop';
+import { FillBlockGame } from '../../games/fillblock';
 import ShootGame from '../../games/shoot';
+import FactoryGame from '../../games/factory';
+import { Puzzle8Game } from '../../games/puzzle8';
 
 const GAMES = {
   circle: CircleGame,
   sonbeong: SBHGame,
   raindrop: RaindropGame,
   shoot: ShootGame,
+  fillBlock: FillBlockGame,
+  factory: FactoryGame,
+  puzzle8: Puzzle8Game
 };
 
 const CodeEditor = dynamic(import('../../components/CodeEditor'), {
   ssr: false,
 });
 
+let inv: any;
 
 export default function NamePage() {
   const router = useRouter();
@@ -36,9 +43,11 @@ export default function NamePage() {
   const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine(GAMES);
 
-
-  console.log(typeof useLogger);
-  const logger = useLogger(logData, setLogData);
+  if (!inv) {
+    inv = setInterval(() => {
+      setExecuted(executed);
+    }, 500);
+  }
 
   React.useEffect(() => {
     const key = router.query.name;
@@ -55,7 +64,7 @@ export default function NamePage() {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => {});
+      start(logger, codeObj).then(() => setCallee(!callee)).catch(() => { });
       setExecuted(true);
     }
   };
