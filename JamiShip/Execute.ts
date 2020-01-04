@@ -31,6 +31,7 @@ export interface ForeignCode {
  * @param injectKey
  */
 function makeFunc(input: string): ForeignCode {
+  // eslint-disable-next-line
   return new Function(`
     return (function() {
       let Game = window.interfaceJA;
@@ -92,7 +93,7 @@ export default class Executor {
       error: (v) => logger('error', v),
       log: (v) => logger('log', v),
       warn: (v) => logger('warn', v),
-      dir: (v) => logger('dir', v)
+      dir: (v) => logger('dir', v),
     };
     injectCode(this.logger, controls);
   }

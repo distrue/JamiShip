@@ -15,12 +15,20 @@ const defaultCode = `function setup() {
   Game.add(20, 20);
 }
 function init() {
-  
+
 }
 function loop() {
-  
+  Game.move(2);
 }`;
 
+const dirPrint = (value: Object) => {
+  let ans = '[Game Object]';
+  for (const [key, val] of Object.entries(value)) {
+    ans = ans.concat('\n', `${key}: ${val.toString()}`);
+  }
+  console.log(ans);
+  return ans;
+};
 export default () => {
   // eslint-disable-next-line
   const [code, setCode] = useState(defaultCode);
@@ -34,9 +42,9 @@ export default () => {
     const data = logData;
     const cnt = data.push({
       level,
-      value: level === 'dir' ? JSON.stringify(Object.entries(value)) : value.toString() 
+      value: level === 'dir' ? dirPrint(value) : value.toString(),
     });
-    if(level === 'error') {
+    if (level === 'error') {
       console.error(value);
     }
     setLog(cnt);
@@ -57,9 +65,7 @@ export default () => {
   return (
     <>
       <Background>
-        <div id="canvas-container">
-          
-        </div>
+        <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
           <Logger count={log} logData={logData} />
