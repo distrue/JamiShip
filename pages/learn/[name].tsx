@@ -37,9 +37,38 @@ function useForceUpdate(){
 
 let timer: any;
 
+const FirstRunHelp = () => (
+  <FRHContainer>
+    <MdRefresh /> 버튼을 눌러 환경을 초기화 해주세요.
+  </FRHContainer>
+);
+
+const FRHContainer = styled.div`
+  & {
+    position: fixed;
+    z-index: 2;
+    left: 16px;
+    top: 450px;
+    height: 40px;
+    width: 270px;
+    padding: 0 20px;
+    background-color: #ddd;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    & svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+`;
+
 export default function NamePage() {
   const router = useRouter();
   // eslint-disable-next-line
+  const [firstRun, setFirstRun] = useState(true);
   const [executed, setExecuted] = useState(false);
   const [code, setCode] = useState('');
   const [codeObj, setCodeObj] = useState<types.UserCode | null>(null);
@@ -76,6 +105,7 @@ export default function NamePage() {
   const compileHandler = () => {
     compile(setCodeObj, logger, code);
     setExecuted(false);
+    setFirstRun(false);
   };
 
   return (
@@ -84,6 +114,7 @@ export default function NamePage() {
       <Background>
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
+        {firstRun ? (<FirstRunHelp />) : ''}
         <div className="state">
           <Logger callee={callee} logData={logData} />
         </div>
