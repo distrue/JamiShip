@@ -4,12 +4,12 @@ import styled from 'styled-components';
 export interface LogItem {
   level: 'dir' | 'log' | 'warn' | 'error';
   value: string;
-};
+}
 
 interface LoggerProps {
   count: number;
   logData: any;
-};
+}
 
 const Logger = (props: LoggerProps) => {
   const endRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -18,10 +18,11 @@ const Logger = (props: LoggerProps) => {
   );
   useEffect(() => {
     endRef.current!.scrollIntoView();
-  })
+  });
+  const { logData } = props;
   return (
     <Container>
-      {props.logData.map(mapLogItem)}
+      {logData.map(mapLogItem)}
       <div ref={endRef} />
     </Container>
   );
@@ -38,7 +39,7 @@ const Container = styled.div`
     color: #FF0000;
   }
   & {
-    background-color: #222;
+    background-color: #111;
     width: 100%;
     height: 100%;
     padding: 8px;

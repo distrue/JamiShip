@@ -1,21 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
-import {MdHome} from 'react-icons/md';
-import Link from 'next/link';
+import { MdHome } from 'react-icons/md';
+import { useRouter } from 'next/router';
 
-const TopBar = () => (
-  <TopBarContainer>
-    <>
-      <Link href="/">
-        <MdHome className="icon" />
-      </Link>
-      <span>JamiShip</span>
-    </>
-  </TopBarContainer>
-);
+const TopBar = () => {
+  const router = useRouter();
+  const exitHandler = () => {
+    console.log(router.pathname);
+    if (router.pathname.startsWith('/learn/')) {
+      // eslint-disable-next-line
+      if (!confirm('페이지를 정말 나갈까요?')) {
+        return;
+      }
+    }
+    router.push('/');
+  };
+  return (
+    <TopBarContainer>
+      <>
+        <div className="home" onClick={exitHandler}><MdHome /></div>
+        <span>JamiShip</span>
+      </>
+    </TopBarContainer>
+  );
+};
 
 const TopBarContainer = styled.div`
   & {
+    z-index: 100000;
     height: 60px;
     width: 100%;
     position: fixed;
@@ -33,12 +45,14 @@ const TopBarContainer = styled.div`
     color: #FFF;
     font-size: 24px;
   }
-  .icon {
-    height: 24px;
-    width: 24px;
-    margin-right: 16px;
-    fill: #FFF;
-    cursor: pointer;
+  .home {
+    & svg {
+      height: 24px;
+      width: 24px;
+      margin-right: 16px;
+      fill: #FFF;
+      cursor: pointer;
+    }
   }
 `;
 

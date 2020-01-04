@@ -24,7 +24,8 @@
     "no-param-reassign": ["error", { "props": false }],
     "import/extensions": ["warn", "never"],
     "lines-between-class-members": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "react/no-array-index-key": "off"
   },
   "parserOptions": {
     "project": "tsconfig.json"
