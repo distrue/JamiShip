@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import {MdRefresh, MdPlayArrow} from 'react-icons/md';
+import { MdRefresh, MdPlayArrow } from 'react-icons/md';
 import { useRouter } from 'next/router';
 import { useEngine, useLogger } from '../../JamiShip';
 import { UserCode, LogItem } from '../../JamiShip/types';
@@ -16,22 +16,27 @@ const CodeEditor = dynamic(import('../../components/CodeEditor'), {
 
 export default function NamePage() {
   const router = useRouter();
-  const key = router.query.name;
-  const filtered = GameDisplay.filter((x) => (x.id === key));
-  const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
   // eslint-disable-next-line
-  const [code, setCode] = useState(currentGame.stub);
+  const [code, setCode] = useState("");
   const [codeObj, setCodeObj] = useState<UserCode | null>(null);
   const [logData, setLogData] = useState<LogItem[]>([]);
   const logger = useLogger(logData, setLogData);
+  const [callee, setCallee] = useState(false);
   const { start, compile } = useEngine();
 
+  React.useEffect(() => {
+    const key = router.query.name;
+    const filtered = GameDisplay.filter((x) => (x.id === key));
+    const currentGame = filtered.length === 0 ? EmptyGame : filtered[0];
+    console.log(filtered);
+    setCode(currentGame.stub);
+  }, [router.query.name]);
   const startHandler = () => {
     if (codeObj === null) {
       // eslint-disable-next-line no-alert
       alert('Code not loaded!');
     } else {
-      start(logger, codeObj).then(() => console.log('complete'));
+      start(logger, codeObj).then(() => setCallee(!callee));
     }
   };
   const compileHandler = () => {
@@ -40,12 +45,12 @@ export default function NamePage() {
 
   return (
     <>
-      <TopBar />
+      <TopBar help={currentGame.tutorial} />
       <Background>
         <div id="canvas-container" />
         <CodeEditor className="cli" onChange={setCode} value={code} />
         <div className="state">
-          <Logger logData={logData} />
+          <Logger callee={callee} logData={logData} />
         </div>
         <div className="controls">
           <div className="control-item" onClick={compileHandler}>
@@ -58,7 +63,7 @@ export default function NamePage() {
       </Background>
     </>
   );
-};
+}
 
 const Background = styled.div`
   width: 100vw;
