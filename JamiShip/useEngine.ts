@@ -59,7 +59,7 @@ export default function useEngine() {
       exec.setCode(code);
       const codeObj = exec.getExec();
       setCodeObj(codeObj);
-      logger('log', 'Reloaded code');
+      logger('log', 'Compile code');
       // setup은 컴파일 직후 실행 (ie. 페이지 로딩 후)
       codeObj.setup();
     } catch (err) {
