@@ -1,4 +1,6 @@
-import { BaseObj } from '../../component';
+import { Block } from './components/component';
+// import Table from './components/table';
+// import Queue from './components/queue';
 
 export default interface Game<T> {
   controllers: T;
@@ -10,12 +12,11 @@ interface FillBlockGameApi {
 };
 
 export class FillBlockGame implements Game<FillBlockGameApi> {
-  private circles: any[] = [];
+  private blocks: any[] = [];
 
   public controllers = { // export controllers
     add: (x: number, y: number) => {
-      const testBase = new BaseObj(
-        ['https://cdn.auth0.com/blog/react-js/react.png'],
+      const testBase = new Block(
         false,
         { x: 100, y: 100 },
         x && y ? { x, y } : undefined,
