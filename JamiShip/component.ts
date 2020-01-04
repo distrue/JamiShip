@@ -93,6 +93,7 @@ export class BaseObj {
   }
   setLocation(x: number, y: number) {
     this.location = { x, y };
+    this.draw();
   }
   getLocation() {
     return this.location;
@@ -102,6 +103,9 @@ export class BaseObj {
   }
   getOverlapable() {
     return this.overlapable;
+  }
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
   private getImageSrcs() {
     const ret = [];
@@ -115,6 +119,7 @@ export class BaseObj {
     return ret;
   }
   draw() {
+    this.clear();
     const getImgs = this.getImageSrcs();
     loadImage(
       getImgs.map((infos) => infos.src),
