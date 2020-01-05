@@ -60,29 +60,31 @@ function loop(frameNo) {
 };
 
 const raindrop = {
-  title: '비내리기',
+  title: '비 막아주기',
+  image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg',
   image: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2018/11/PS18112700119.jpg',
   id: 'raindrop',
-  desc: '비를 내려 고양이를 목욕시키세요',
+  desc: '귀여운 고양이가 비를 피할 수 있도록 도와주세요.',
   stub: `function setup() {
   setGame("raindrop");
 }
 
 function init() {
-  Game.addRaindrop(500, 10);
-  Game.addRaindrop(200, 5);
-  Game.addRaindrop(400, 5);
   Game.addTraveler();
-  Game.randomTravelerMove();
-  for (let i = 0 ; i < 10; i +=1) {
-    Game.addRaindrop(Math.random()*1000, Math.random()*10);
-  }
+  
 }
 
 function loop() {
-
+  for (let i = 0 ; i < 15; i +=1) {
+    Game.addRaindrop(Math.random()*1000, Math.random()*10 + 10);
+  }
+  Game.randomTravelerMove();
 }`,
-  tutorial: [],
+tutorial: [`랜덤으로 내리는 비와 랜덤으로 움직이는 고양이가 있습니다..<br>
+우산을 하나 생성해서 고양이의 움직임을 따라 우산이 함께 움직이도록 해서 고양이가 비를 피할 수 있도록 도와주세요<br>
+randomTravelerMove 함수는 고양이가 이동할 위치의 x좌표를 리턴합니다.
+코드를 수정해서 고양이가 비를 피할 수 있도록 도와주세요!
+`],
   rating: 4
 };
 

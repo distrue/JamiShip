@@ -127,7 +127,7 @@ export class BaseObj {
    * @param time 총 걸릴 시간
    * @param interval 한 프레임(기본 16초)
    */
-  moveToWithCheckBump(items: BaseObj[], x: number, y: number, time: number, interval: number = 16) {
+  moveToWithCheckBump(items: any[], x: number, y: number, time: number, interval: number = 16) {
     if (this.getOverlapable()) {
       return this.moveTo(x, y, time, interval);
     }
@@ -139,9 +139,11 @@ export class BaseObj {
         number -= 1;
         if (number >= 0) {
           for (let i = 0; i < items.length; i += 1) {
-            const bumped = checkRectOverlap(this.getInnerRect(), items[i].getInnerRect());
+            const innerRect = this.getInnerRect()
+            const ItemsInnerRect = items[i].getInnerRect();
+            const bumped = checkRectOverlap(innerRect, ItemsInnerRect);
             if (bumped && items[i].getOverlapable() === false) {
-              return reject();
+              return reject(items[i].type);
             }
           }
           setTimeout(move, interval);
