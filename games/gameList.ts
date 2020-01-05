@@ -15,6 +15,7 @@ const playground = {
   desc: '아무거나 하세요',
   stub: `function setup() {
 setGame("circle");
+logger.dir(Game);
 }
 function init() {
 
@@ -32,6 +33,7 @@ const sonbeonghoGame = {
   desc: '1962년생, 키 173cm, 안동 출신',
   stub: `function setup() {
   setGame("sonbeong");
+  logger.dir(Game);
   Game.add(150, 150, 'character', { hairColor: 'black',  height: 190 });
   Game.add(300, 50, 'character', { hairColor: 'green', height: 190 });
   Game.add(450, 150, 'character', { onGlasses: true, hairColor: 'black', height: 180 });
@@ -61,7 +63,6 @@ function loop(frameNo) {
 
 const raindrop = {
   title: '비 막아주기',
-  image: 'https://www.miracle-recreation.com/content/uploads/2018/11/Image-Header_Park.jpg',
   image: 'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2018/11/PS18112700119.jpg',
   id: 'raindrop',
   desc: '귀여운 고양이가 비를 피할 수 있도록 도와주세요.',
@@ -86,7 +87,7 @@ tutorial: [`랜덤으로 내리는 비와 랜덤으로 움직이는 고양이가
 randomTravelerMove 함수는 고양이가 이동할 위치의 x좌표를 리턴합니다.
 코드를 수정해서 고양이가 비를 피할 수 있도록 도와주세요!
 `],
-  rating: 4
+  rating: 2
 };
 
 const shoot = {
@@ -96,6 +97,7 @@ const shoot = {
   desc: '대포로 과녁을 맞추세요',
   stub: `function setup() {
   setGame("shoot");
+  logger.dir(Game);
 }
 function init() {
   logger.log(Game.getTarget());
@@ -109,7 +111,7 @@ tutorial: [`게임의 룰은 간단합니다.<br>
 지금 작성되어 있는 코드는 높이 있는 과녁밖에 맞추지 못합니다.
 코드를 수정해서 전부 맞출 수 있도록 고쳐주세요!
 `],
-rating: 2
+rating: 4
 };
 const factory = {
   title: '공장 (튜토리얼)',
