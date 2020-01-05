@@ -67,6 +67,7 @@ const raindrop = {
   desc: '귀여운 고양이가 비를 피할 수 있도록 도와주세요.',
   stub: `function setup() {
   setGame("raindrop");
+  logger.dir(Game);
 }
 
 function init() {
