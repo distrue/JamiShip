@@ -1,5 +1,5 @@
 import Table from './table';
-import { Game } from '../../JamiShip/types';
+import { Game } from '../types';
 
 interface FillBlockGameApi {
   move: (direction: number) => unknown;
@@ -11,7 +11,7 @@ interface FillBlockGameApi {
   setGoalMap: (map: boolean[][]) => boolean[][];
 };
 
-export class FillBlockGame implements Game<FillBlockGameApi> {
+export class FillBlockGame implements types.Game<FillBlockGameApi> {
   private position: number[] = [0, 0];
   private tempMap: boolean[][] = [[false, true, true, false, false], [false, true, false, true, false], [false, false, false, false, false], [false, true, false, true, false], [false, true, false, false, true]];
   private dx: number[] = [-1, 0, 1, 0];

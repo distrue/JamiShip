@@ -1,9 +1,5 @@
 import Table from './table';
-
-export default interface Game<T> {
-  controllers: T;
-  frame: (frameNo: number) => Promise<boolean>;
-};
+import { types } from 'jamiship';
 
 interface Puzzle8GameApi {
   move: (num: number) => string;
@@ -13,7 +9,7 @@ interface Puzzle8GameApi {
   setGoalState: (state: string) => string;
 };
 
-export class Puzzle8Game implements Game<Puzzle8GameApi> {
+export class Puzzle8Game implements types.Game<Puzzle8GameApi> {
   private tempState: string = '312458607';
   private goalState: string = '012345678';
   private goableIndexesList: number[][] = [[1, 3], [0, 2, 4], [1, 5], [0, 4, 6], [1, 3, 5, 7], [2, 4, 8], [3, 7], [4, 6, 8], [5, 7]];
@@ -89,7 +85,7 @@ export class Puzzle8Game implements Game<Puzzle8GameApi> {
       return true;
     }
     this.createTable();
-    return false;
+    return undefined;
   }
 
   constructor() {

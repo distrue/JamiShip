@@ -1,5 +1,5 @@
-import { types } from 'jamiship';
 import { BaseObj } from './circle';
+import { types } from 'jamiship';
 
 interface CircleGameApi {
   add: (x: number, y: number) => unknown;

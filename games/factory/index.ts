@@ -1,5 +1,4 @@
-import { Game } from "../../JamiShip/types";
-
+import { types } from 'jamiship';
 
 export type TestFunc = (a: number, b: number) => number;
 
@@ -20,7 +19,7 @@ const intervalPromise = (len: number) => new Promise((res) => {
 
 const TICK = 100;
 
-export default class FactoryGame implements Game<FactoryGameApi> {
+export default class FactoryGame implements types.Game<FactoryGameApi> {
   private funcType: 'plus' | 'minus';
   private funcCorrectCount: number;
   private funcUseCount: number;
