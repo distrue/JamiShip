@@ -1,14 +1,18 @@
 {
-  "name": "JamiShip",
+  "name": "JamiShip_proj",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
     "@types/next": "^9.0.0",
     "@types/styled-components": "^4.4.1",
+    "ace-builds": "^1.4.7",
+    "jamiship": "^0.1.5",
     "next": "^9.1.7",
     "react": "^16.12.0",
+    "react-ace": "^8.0.0",
     "react-dom": "^16.12.0",
+    "react-icons": "^3.8.0",
     "styled-components": "^4.4.1"
   },
   "scripts": {
