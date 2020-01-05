@@ -17,7 +17,7 @@ JamiShip 모듈의 장점은 다음과 같습니다.
 #### 1. canvas를 활용, 외부 dependency가 없는 lightweight animation engine
 * vanilla JS로 구성하여 외부 dependency가 없으며, 높은 frame ( ~ 60 fps)에서도 component 동작이 매끄러움을 보입니다.
 
-#### 2. javascript 코드를 통한 모듈화 가능, `customable D3.js`의 형식
+#### 2. javascript 코드를 통한 모듈화 가능, `customizable D3.js`의 형식
 * `D3.js`의 형식을 차용하면서도, 별도의 component를 import 할 수 있는 형식으로 작업이 반복될 수록 모듈을 통한 생산성 향상에 도움이 되도록 합니다.
 ``` md
 ├── pages
