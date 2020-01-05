@@ -42,6 +42,7 @@ export class Puzzle8Game implements Game<Puzzle8GameApi> {
     return tempState;
   }
   public controllers = { // export controllers
+    desc_move: '선택한 번호와 이웃한 칸 중에 빈칸이 있다면, 그곳으로 해당 칸을 이동시킵니다.',
     move: (num: number) => {
       const zeroIdx = this.tempState.indexOf('0');
       const targetIdx = this.tempState.indexOf(num.toString());
@@ -52,19 +53,23 @@ export class Puzzle8Game implements Game<Puzzle8GameApi> {
       this.createTable();
       return this.tempState;
     },
+    desc_getState: '현재 퍼즐의 상태를 문자열로 반환합니다.',
     getState: () => {
       logger.log(`Current state: \n${this.stateToString(this.tempState)}`);
       return this.tempState;
     },
+    desc_setState: '현재 퍼즐의 상태를 강제로 변환할 수 있습니다. 문자열을 입력해야 합니다.',
     setState: (state: string) => {
       this.tempState = state;
       this.createTable();
       return this.tempState;
     },
+    desc_getGoalState: '목표 퍼즐의 상태를 문자열로 반환합니다.',
     getGoalState: () => {
       logger.log(`Goal state: \n${this.stateToString(this.goalState)}`);
       return this.goalState;
     },
+    desc_setGoalState: '목표 퍼즐의 상태를 설정합니다. 문자열을 입력해야 합니다.',
     setGoalState: (state: string) => {
       this.goalState = state;
       logger.log(`Goal State: \n${this.stateToString(this.goalState)}.`);
