@@ -90,6 +90,31 @@ export default class FactoryGame implements Game<FactoryGameApi> {
     this.funcUseCount = 0;
     this.funcNeededScore = 0;
     this.setupNextFunc();
+
+    const container = document.getElementById('canvas-container')!;
+
+    const bg = document.createElement('img');
+    bg.src = 'http://news.kbiz.or.kr/news/photo/201805/46851_9179_3244.jpg';
+    bg.style.width = '100%';
+    bg.style.height = '100%';
+    container.appendChild(bg);
+
+    const txt1 = document.createElement('div');
+    txt1.innerText = '↑불량';
+    txt1.style.fontSize = '36px';
+    txt1.style.position = 'absolute';
+    txt1.style.top = '80px';
+    txt1.style.left = '350px';
+    container.appendChild(txt1);
+    const txt2 = document.createElement('div');
+    txt2.innerText = '정상→';
+    txt2.style.color = 'rgb(225, 227, 20)';
+    txt2.style.fontSize = '36px';
+    txt2.style.position = 'absolute';
+    txt2.style.top = '285px';
+    txt2.style.left = '700px';
+    container.appendChild(txt2);
+
     // Setup item
     const pcEl = document.createElement('canvas');
     const ctx = pcEl.getContext('2d');
@@ -102,7 +127,8 @@ export default class FactoryGame implements Game<FactoryGameApi> {
     ctx?.drawImage(img, 0, 0);
     pcEl.style.height = "64px";
     pcEl.style.position = "absolute";
-    document.getElementById('canvas-container')?.appendChild(pcEl);
+    container.appendChild(pcEl);
+
     this.pc = pcEl;
   }
 }
