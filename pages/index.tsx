@@ -13,6 +13,39 @@ interface GameItemProps {
   rating?: number;
 }
 
+const Banner = () => (
+  <BannerContainer>
+    <h1>JamiShipJS</h1>
+    <span>재미있고 쉬운 자바스크립트 코딩</span>
+  </BannerContainer>
+);
+
+const BannerContainer = styled.div`
+  & {
+    position: absolute;
+    left: 0;
+    top: 60px;
+    width: 100vw;
+    height: 360px;
+    background-image: url("https://miro.medium.com/max/3000/0*3Bju1yQhxUn2dWkf.jpg");
+    background-size: fit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    & > h1 {
+      font-size: 72px;
+      color: #FFF;
+      margin: 16px 0;
+    }
+    & > span {
+      font-size: 36px;
+      color: #FFF;
+    }
+  }
+`;
+
 const GameItem = (props: GameItemProps) => {
   const {link, image, title, detail, rating} = props;
   const stars = [];
@@ -45,18 +78,22 @@ const GameItem = (props: GameItemProps) => {
 
 const Main = () => (
   <Layout>
-    <Container>
-      <h1>학습 시작하기</h1>
-      <div className="items">
-        {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={`/learn/${v.id}`} detail={v.desc} rating={v.rating} />)}
-      </div>
-    </Container>
+    <>
+      <Banner />
+      <Container>
+        <h1>학습 시작하기</h1>
+        <div className="items">
+          {items.map((v, ind) => <GameItem key={ind} image={v.image} title={v.title} link={`/learn/${v.id}`} detail={v.desc} rating={v.rating} />)}
+        </div>
+      </Container>
+    </>
   </Layout>
 );
 
 const Container = styled.div`
   & {
-    padding-top: 8px;
+    padding: 0;
+    margin-top: 440px;
   }
   h1 {
     margin-left: 16px;

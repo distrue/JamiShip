@@ -24,7 +24,7 @@ export default class Table {
       this.ctx.fillRect(x, y, 50, 50);
       this.ctx.strokeRect(x, y, 50, 50);
       // eslint-disable-next-line radix
-      const num = parseInt(this.tempState[i]) >= 0 ? this.tempState[i] : '';
+      const num = parseInt(this.tempState[i]) > 0 ? this.tempState[i] : '';
       this.ctx.font = '20px Georgia';
       this.ctx.fillStyle = 'black';
       this.ctx.fillText(num, x + 20, y + 30);
