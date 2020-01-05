@@ -140,4 +140,8 @@ const compileHandler = () => {
 * MIT license를 따릅니다.
 
 ##### Team WaaS
-정연길, 장우혁, 노정훈, 윤준혁, 정호진
+[정연길](https://github.com/distrue),
+[장우혁](https://github.com/Bor1bori),
+[노정훈](https://github.com/jungnoh),
+[윤준혁](https://github.com/junhyeog),
+[정호진](https://github.com/froggagul)
